@@ -26,7 +26,7 @@ from tkinter.messagebox import WARNING
 
 import requests
 
-from launcher import CONFIG_FILE, PROJECT_NAME, GITHUB_API_CONTENT_URL, OCTOBOT_GITHUB_REPOSITORY, \
+from launcher import CONFIG_FILE, OCTOBOT_NAME, GITHUB_API_CONTENT_URL, OCTOBOT_GITHUB_REPOSITORY, \
     GITHUB_RAW_CONTENT_URL, VERSION_DEV_PHASE, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, DeliveryPlatformsName, \
     TENTACLES_PATH, CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, CONFIG_INTERFACES, \
     CONFIG_INTERFACES_WEB, OCTOBOT_BACKGROUND_IMAGE, OCTOBOT_ICON
@@ -93,7 +93,7 @@ class Launcher:
         if binary_path:
             self.update_tentacles(binary_path)
         else:
-            logging.error(f"No {PROJECT_NAME} found to update tentacles.")
+            logging.error(f"No {OCTOBOT_NAME} found to update tentacles.")
 
     @staticmethod
     def _ensure_directory(file_path):
@@ -126,7 +126,7 @@ class Launcher:
 
     def create_environment(self):
         self.launcher_app.inc_progress(0, to_min=True)
-        logging.info(f"{PROJECT_NAME} is checking your environment...")
+        logging.info(f"{OCTOBOT_NAME} is checking your environment...")
 
         # download files
         for file_to_dl in FILES_TO_DOWNLOAD:
@@ -147,12 +147,12 @@ class Launcher:
         if self.launcher_app:
             self.launcher_app.inc_progress(CREATE_FOLDERS_PROGRESS_SIZE)
 
-        logging.info(f"Your {PROJECT_NAME} environment is ready !")
+        logging.info(f"Your {OCTOBOT_NAME} environment is ready !")
 
     def update_binary(self):
         # parse latest release
         try:
-            logging.info(f"{PROJECT_NAME} is checking for updates...")
+            logging.info(f"{OCTOBOT_NAME} is checking for updates...")
             latest_release_data = self.get_latest_release_data()
 
             # try to found in current folder binary
@@ -160,7 +160,7 @@ class Launcher:
 
             # if current octobot binary found
             if binary_path:
-                logging.info(f"{PROJECT_NAME} installation found, analyzing...")
+                logging.info(f"{OCTOBOT_NAME} installation found, analyzing...")
 
                 last_release_version = latest_release_data["tag_name"]
                 current_bot_version = self.get_current_bot_version(binary_path)
@@ -171,10 +171,10 @@ class Launcher:
                     check_new_version = False
 
                 if check_new_version:
-                    logging.info(f"Upgrading {PROJECT_NAME} : from {current_bot_version} to {last_release_version}...")
+                    logging.info(f"Upgrading {OCTOBOT_NAME} : from {current_bot_version} to {last_release_version}...")
                     return self.download_binary(latest_release_data, replace=True)
                 else:
-                    logging.info(f"Nothing to do : {PROJECT_NAME} is up to date")
+                    logging.info(f"Nothing to do : {OCTOBOT_NAME} is up to date")
                     if self.launcher_app:
                         self.launcher_app.inc_progress(BINARY_DOWNLOAD_PROGRESS_SIZE)
                     return binary_path
@@ -196,10 +196,10 @@ class Launcher:
         try:
             # try to found in current folder binary
             if os.name == 'posix':
-                binary = "./" + next(iter(glob.glob(f'{PROJECT_NAME}*')))
+                binary = "./" + next(iter(glob.glob(f'{OCTOBOT_NAME}*')))
 
             elif os.name == 'nt':
-                binary = next(iter(glob.glob(f'{PROJECT_NAME}*.exe')))
+                binary = next(iter(glob.glob(f'{OCTOBOT_NAME}*.exe')))
 
             elif os.name == 'mac':
                 pass
@@ -259,7 +259,7 @@ class Launcher:
         # search for corresponding release
         for asset in latest_release_data["assets"]:
             asset_name, _ = os.path.splitext(asset["name"])
-            if f"{PROJECT_NAME}_{os_name.value}" in asset_name:
+            if f"{OCTOBOT_NAME}_{os_name.value}" in asset_name:
                 return asset
         return None
 
@@ -273,7 +273,7 @@ class Launcher:
             r = requests.get(binary["browser_download_url"], stream=True)
 
             binary_name, binary_ext = os.path.splitext(binary["name"])
-            path = f"{PROJECT_NAME}{binary_ext}"
+            path = f"{OCTOBOT_NAME}{binary_ext}"
 
             if r.status_code == 200:
 
@@ -319,8 +319,8 @@ class Launcher:
 
             if not rights_process:
                 # show message if user has to type the command
-                message = f"{PROJECT_NAME} binary need execution rights, " \
-                          f"please type in a command line 'sudo chmod +x ./{PROJECT_NAME}'"
+                message = f"{OCTOBOT_NAME} binary need execution rights, " \
+                          f"please type in a command line 'sudo chmod +x ./{OCTOBOT_NAME}'"
                 logging.warning(message)
                 if self.launcher_app:
                     self.launcher_app.show_alert(f"{message} and then press OK", bitmap=WARNING)

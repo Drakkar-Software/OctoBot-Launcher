@@ -3,16 +3,16 @@
 block_cipher = None
 
 
-a = Analysis(['../../launcher.py'],
-             pathex=['../../'],
+a = Analysis(['../launcher.py'],
+             pathex=['../'],
              binaries=[],
-             datas=[('../../interfaces/web', 'interfaces/web')],
+             datas=[('../interfaces/web', 'interfaces/web')],
              hiddenimports=["glob", "subprocess", "json", "requests", "os", "logging",
              "tkinter", "tkinter.ttk", "tkinter.dialog", "tkinter.dialog", "tkinter.messagebox",
-             "distutils", "distutils.version", "config", "logging"],
+             "distutils", "distutils.version", "config", "logging", "launcher"],
              hookspath=[],
              runtime_hooks=[],
-             excludes=["interfaces.gui.launcher"],
+             excludes=[],
              win_no_prefer_redirects=False,
              win_private_assemblies=False,
              cipher=block_cipher)
@@ -26,7 +26,7 @@ exe = EXE(pyz,
           name='launcher',
           debug=False,
           strip=False,
-          icon="../../interfaces/web/static/favicon.ico",
+          icon="../interfaces/web/static/favicon.ico",
           upx=True,
           runtime_tmpdir=None,
 console=True )
