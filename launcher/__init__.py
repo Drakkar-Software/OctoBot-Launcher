@@ -15,7 +15,7 @@
 #  License along with this library.
 from enum import Enum
 
-PROJECT_NAME = "octobot-launcher"
+PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_NAME = "OctoBot"
 VERSION = "1.0.0"
 VERSION_DEV_PHASE = "beta"

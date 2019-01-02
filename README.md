@@ -1,4 +1,4 @@
-# Octobot-Launcher [1.0.0](https://github.com/Drakkar-Software/OctoBot-Launcher/tree/master/CHANGELOG.md)
+# OctoBot-Launcher [1.0.0](https://github.com/Drakkar-Software/OctoBot-Launcher/tree/master/CHANGELOG.md)
 
 A launcher for your [OctoBot](https://github.com/Drakkar-Software/OctoBot) ! 
 
