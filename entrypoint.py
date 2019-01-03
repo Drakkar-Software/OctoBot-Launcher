@@ -6,7 +6,7 @@ import sys
 from launcher.launcher import update_launcher, start_launcher
 
 
-def main(args):
+def main(args=sys.argv[1:]):
     logging.basicConfig(level=logging.INFO)
 
     parser = argparse.ArgumentParser(description='OctoBot - Launcher')
@@ -35,4 +35,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
