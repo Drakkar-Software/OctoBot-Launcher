@@ -41,7 +41,7 @@ setup(
     python_requires='>=3.7',
     entry_points={
         'console_scripts': [
-            PROJECT_NAME + ' = launcher:main'
+            PROJECT_NAME + ' = __main__:main'
         ]
     },
     classifiers=[
