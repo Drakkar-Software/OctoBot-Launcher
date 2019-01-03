@@ -31,8 +31,8 @@ setup(
     author='Drakkar-Software',
     author_email='drakkar.software@protonmail.com',
     description='Cryptocurrencies alert / trading bot',
-    py_modules=['launcher'],
-    packages=['interfaces.gui.launcher', 'interfaces.gui.util', 'config'],
+    py_modules=['entrypoint'],
+    packages=['launcher'],
     long_description=DESCRIPTION,
     install_requires=REQUIRED,
     tests_require=REQUIRED_DEV,
@@ -41,7 +41,7 @@ setup(
     python_requires='>=3.7',
     entry_points={
         'console_scripts': [
-            PROJECT_NAME + ' = __main__:main'
+            PROJECT_NAME + ' = entrypoint:main'
         ]
     },
     classifiers=[

@@ -4,7 +4,8 @@ import logging
 
 from launcher.launcher import update_launcher, start_launcher
 
-if __name__ == '__main__':
+
+def main():
     logging.basicConfig(level=logging.INFO)
 
     parser = argparse.ArgumentParser(description='OctoBot - Launcher')
@@ -22,8 +23,12 @@ if __name__ == '__main__':
     update_launcher()
 
     try:
-        from launcher.launcher_app import *
+        import launcher.launcher_app
     except ImportError:
         importlib.import_module("launcher.launcher_app")
 
     start_launcher(args)
+
+
+if __name__ == '__main__':
+    main()

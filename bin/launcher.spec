@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['../__main__.py'],
+a = Analysis(['../entrypoint.py'],
              pathex=['../'],
              binaries=[],
              datas=[],
