@@ -18,11 +18,6 @@ from setuptools import setup
 
 from launcher import PROJECT_NAME, VERSION
 
-DESCRIPTION = open('README.md').read() + '\n\n' + open('CHANGELOG.md').read()
-
-REQUIRED = open('requirements.txt').read()
-REQUIRED_DEV = open('dev_requirements.txt').read()
-
 setup(
     name=PROJECT_NAME,
     version=VERSION,
@@ -33,9 +28,9 @@ setup(
     description='Cryptocurrencies alert / trading bot',
     py_modules=['entrypoint'],
     packages=['launcher'],
-    long_description=DESCRIPTION,
-    install_requires=REQUIRED,
-    tests_require=REQUIRED_DEV,
+    long_description='Cryptocurrencies alert / trading bot',
+    install_requires=['requests'],
+    tests_require=['pytest'],
     test_suite="tests",
     zip_safe=False,
     python_requires='>=3.7',
