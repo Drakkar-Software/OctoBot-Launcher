@@ -1,3 +1,18 @@
+notifications:
+  email: false
+
+sudo: enabled
+os: linux
+language: python
+python:
+  - "nightly"
+
+install:
+  - pip3 install -r requirements.txt -r dev_requirements.txt
+
+script:
+  - pytest
+
 deploy:
   provider: pypi
   user:

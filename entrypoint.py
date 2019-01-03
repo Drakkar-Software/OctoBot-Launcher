@@ -1,11 +1,12 @@
 import argparse
 import importlib
 import logging
+import sys
 
 from launcher.launcher import update_launcher, start_launcher
 
 
-def main():
+def main(args):
     logging.basicConfig(level=logging.INFO)
 
     parser = argparse.ArgumentParser(description='OctoBot - Launcher')
@@ -17,8 +18,10 @@ def main():
                         action='store_true')
     parser.add_argument('-e', '--export_logs', help="export Octobot's last logs",
                         action='store_true')
+    parser.add_argument('-ng', '--no_gui', help="Without gui",
+                        action='store_true')
 
-    args = parser.parse_args()
+    args = parser.parse_args(args)
 
     update_launcher()
 
@@ -27,8 +30,9 @@ def main():
     except ImportError:
         importlib.import_module("launcher.launcher_app")
 
-    start_launcher(args)
+    if not args.no_gui:
+        start_launcher(args)
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
