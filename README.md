@@ -5,7 +5,7 @@ A launcher for your [OctoBot](https://github.com/Drakkar-Software/OctoBot) !
 ## Install
 With [Python 3.7](https://www.python.org/downloads/) : 
 ``` {.sourceCode .bash}
-$ pip install octobot-launcher
+$ pip3 install OctoBot-Launcher
 ```
 
 ## Usage
