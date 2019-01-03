@@ -21,7 +21,7 @@ from launcher import PROJECT_NAME, VERSION
 setup(
     name=PROJECT_NAME,
     version=VERSION,
-    url='https://github.com/Drakkar-Software/OctoBot',
+    url='https://github.com/Drakkar-Software/OctoBot-Launcher',
     license='LGPL-3.0',
     author='Drakkar-Software',
     author_email='drakkar.software@protonmail.com',
