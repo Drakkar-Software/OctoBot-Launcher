@@ -1,24 +1,33 @@
 notifications:
   email: false
-
 sudo: enabled
 os: linux
 language: python
 python:
-  - "nightly"
-
+- nightly
 install:
-  - pip3 install -r requirements.txt -r dev_requirements.txt
-
+- pip3 install -r requirements.txt -r dev_requirements.txt
 script:
-  - pytest
-
+- pytest
+before_deploy:
+- pyinstaller bin/launcher.spec
+- mv dist/launcher dist/launcher_linux
 deploy:
-  provider: pypi
-  user:
-    secure: gCnxIfOj9GYRu3rAmoaE73VeELUzINK1ZseAYo4RY2lzJ+QHNiXcaQuHrj/CyyaTcrKOeHzvCtA5J5e3WQqU29ul3JaJXSIdWSamxyx9H3YdoxFs9PjXQhDx3pE/3DLDasvzDRZNCux6oZ31WzL7qdaZr1eYNrg75uIRusLYvLu4hwG41w0OZ5YjnehK98Lx5YkiXYq+Gw5FChLrliN3NYI9HoM13XWQcdghatgg+jzXW3Yp2svL7n4kw54WCZ+et50dC74+mDEG5VGK6/LcQzVipTIppdcK3qpHBhL65ZIxC0IUSJkD/Vrb4s53nF7RLm/XiLrpHdWGQ20KGMIB0b8VTOUnuCEcayW7Q6ieU405r7h+hvr+Qn37v+EI7+aUfWTnz73ZWYJ3o3F94hNYQfaNBEY98NEWscIx4esPvjYsMxXIb/LvxjMQAZP1SWwiQ+DFgxTZNUXgk7cpaJkTzgBim6t5mwXnoQLRz/kC+B7CYg3wPxDJ8kwB7hJQzbkgul1ca83qBZHOSnpkESfkyjpVim1NZQkQH1D3T5Izp7i88epScV+0cBOtqOPiL9bPDZ4wve3/D1v2IsqqMAyiMTZF/QFa8hFvXL09QKKxoufl8/vuP7wUj1ebu0o+7qPhXS6gI6us4KUYYQdNMqZg/xHzSIiRAtFIlG8T+WpDcu8=
-  password:
-    secure: LDxZV2mJ6BB5bAt2XSf9AjWgUEJValfNHeiGZuH4WNsxgCQqOIRDhP1om/q8zL47c6iYHvV9N5h9xC0Nz9mIKVJxL8HWReJ8i4jYaE6dn+FKGNWZED5KJa0fTTsQUVdRhekU92fV8JMSgFKf8JI4kEofb4NNpgD3oC8zS16oG0CC4TZ90KWgunU5HJrV2m4tSw86wLJDehpPjnucan217oTuBTZxG8S+cNF7qVc0oSbJFOTW1jtGwFc6T9bLMF5CELRoChcpY3BhRGhu21LjCLwFc/BY0wNfTzlrY1sNlM1KorRvikIYWL8F0wHNCewztBORUIGgcYgvXj2I/Endrti4CdfcySHTMqn2uffv99gFinIftMy+F1E37cM7vRUY08na2jqH/3k2rrE/vKeLep1Lzk4LkaBG72Co0t509sORAFzQoIrVdnJPf5ZidJzEaivwi3ZG1/GkmXC5ERH5CBwWihHF4itdi0deSsmWKbHthJCEw3emqEhrbDAwwfdIV2MuwGmxvJ5oxjZBBSzpblO7b0LdHhoEqdeqbBs5BHVRwjmsNia86dxvzZH6lj7ylllAl6Z7XENynOUNUqgLhbQeDioR3EWLUTvXnGf3+gPieSPmD4F+YYfLzwIjRMWmu0yLX9N57DrkM/fAlq3l8AVnjX9TZFk7iVyuNkUfmYQ=
-  on:
-    branch: master
-  skip_existing: true
+  - provider: pypi
+    user:
+      secure: gCnxIfOj9GYRu3rAmoaE73VeELUzINK1ZseAYo4RY2lzJ+QHNiXcaQuHrj/CyyaTcrKOeHzvCtA5J5e3WQqU29ul3JaJXSIdWSamxyx9H3YdoxFs9PjXQhDx3pE/3DLDasvzDRZNCux6oZ31WzL7qdaZr1eYNrg75uIRusLYvLu4hwG41w0OZ5YjnehK98Lx5YkiXYq+Gw5FChLrliN3NYI9HoM13XWQcdghatgg+jzXW3Yp2svL7n4kw54WCZ+et50dC74+mDEG5VGK6/LcQzVipTIppdcK3qpHBhL65ZIxC0IUSJkD/Vrb4s53nF7RLm/XiLrpHdWGQ20KGMIB0b8VTOUnuCEcayW7Q6ieU405r7h+hvr+Qn37v+EI7+aUfWTnz73ZWYJ3o3F94hNYQfaNBEY98NEWscIx4esPvjYsMxXIb/LvxjMQAZP1SWwiQ+DFgxTZNUXgk7cpaJkTzgBim6t5mwXnoQLRz/kC+B7CYg3wPxDJ8kwB7hJQzbkgul1ca83qBZHOSnpkESfkyjpVim1NZQkQH1D3T5Izp7i88epScV+0cBOtqOPiL9bPDZ4wve3/D1v2IsqqMAyiMTZF/QFa8hFvXL09QKKxoufl8/vuP7wUj1ebu0o+7qPhXS6gI6us4KUYYQdNMqZg/xHzSIiRAtFIlG8T+WpDcu8=
+    password:
+      secure: LDxZV2mJ6BB5bAt2XSf9AjWgUEJValfNHeiGZuH4WNsxgCQqOIRDhP1om/q8zL47c6iYHvV9N5h9xC0Nz9mIKVJxL8HWReJ8i4jYaE6dn+FKGNWZED5KJa0fTTsQUVdRhekU92fV8JMSgFKf8JI4kEofb4NNpgD3oC8zS16oG0CC4TZ90KWgunU5HJrV2m4tSw86wLJDehpPjnucan217oTuBTZxG8S+cNF7qVc0oSbJFOTW1jtGwFc6T9bLMF5CELRoChcpY3BhRGhu21LjCLwFc/BY0wNfTzlrY1sNlM1KorRvikIYWL8F0wHNCewztBORUIGgcYgvXj2I/Endrti4CdfcySHTMqn2uffv99gFinIftMy+F1E37cM7vRUY08na2jqH/3k2rrE/vKeLep1Lzk4LkaBG72Co0t509sORAFzQoIrVdnJPf5ZidJzEaivwi3ZG1/GkmXC5ERH5CBwWihHF4itdi0deSsmWKbHthJCEw3emqEhrbDAwwfdIV2MuwGmxvJ5oxjZBBSzpblO7b0LdHhoEqdeqbBs5BHVRwjmsNia86dxvzZH6lj7ylllAl6Z7XENynOUNUqgLhbQeDioR3EWLUTvXnGf3+gPieSPmD4F+YYfLzwIjRMWmu0yLX9N57DrkM/fAlq3l8AVnjX9TZFk7iVyuNkUfmYQ=
+    on:
+      branch: master
+    skip_existing: true
+  - provider: releases
+    api_key:
+      secure: cQaezwO+v0d3NJu2oY0+7e3JngZkSju+dXTUimIyTfZGDUaS7yCeGW5Q0Zb+LolEXYuMWdcv0VaIKZjSL5Yb4ROaTk9qg5g1jnHk8ntzxlemKAk/ahmsIe+MSx14g1PAGYTJBGftWTAqzZ/ZWMBQqSgL2zhxI5gLprnaDfRA4z1mZXNCGo8MASTI9mf+jrIt9rQsJ2pjldTTP7G5ofJfqqg3JLafcWQl6vg5HwaisFRlrtfyWurZIhA8y95Qrin51Kyj2jlxABVqA0mgC6cf2SpvYlID2sG/JzH2SWWQ1JO4wt832aACQAr3trDr/+Ko5ivJJXYqetDCvgTwd4V+4CmO5YyCcPZAOmLJVnY1I3svhWXR/XQqqK4hfMN42KC2NlHVCXvD/gYpbbJKwcAeGQI28tDjV9yZe8ZEu095pFb8AUPJVd40vNTAcYgScfIWneJ7NR0I/LK/itUmjeIOU6k+f1X94yKgNlZeAjAtBc/45Am/He1uCMVI4RD8yqlLBUqh9ofOvdzkNBOmkJ4xieJVsyrR/+QjNnOlFgt+ZDAKLhOr3RLqzy4FS7C+RrJIb0HZfSjnruj5HOdLEOubDdf3s2sbhWyl/DVJ/m1D/kLSitgql9ME3RYmTHadNRSw0u3jF5nATuin6iNZdG7VroiIacsIUlzbkx2UO/kGY1g=
+    file: dist/launcher_linux
+    skip_cleanup: true
+    name: Release - $TRAVIS_TAG
+    on:
+      repo: Drakkar-Software/OctoBot-Launcher
+      branch: master
+      tags: true
