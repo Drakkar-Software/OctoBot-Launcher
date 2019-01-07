@@ -26,9 +26,7 @@ from launcher import launcher_controller
 from launcher.app_util import AbstractTkApp
 from launcher.launcher_controller import Launcher
 
-from launcher import PROJECT_NAME
-
-LAUNCHER_VERSION = "1.0.4"
+from launcher import PROJECT_NAME, VERSION
 
 
 class LauncherApp(AbstractTkApp):
@@ -67,7 +65,7 @@ class LauncherApp(AbstractTkApp):
         self.update_launcher_button = Button(self.top_frame, command=self.update_launcher_handler,
                                              text="Update Launcher", style='Bot.TButton')
         self.launcher_version_label = Label(self.top_frame,
-                                            text=f"Launcher version : {LAUNCHER_VERSION}",
+                                            text=f"Launcher version : {VERSION}",
                                             style='Bot.TLabel')
         self.update_launcher_button.grid(row=2, column=2, padx=200, pady=5)
         self.launcher_version_label.grid(row=2, column=1, )

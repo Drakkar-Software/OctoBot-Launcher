@@ -20,10 +20,10 @@ import sys
 
 import requests
 
-from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, LAUNCHER_PATH
+from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, LAUNCHER_PATH, VERSION
 
 # should have VERSION_DEV_PHASE
-from launcher.launcher_app import LAUNCHER_VERSION, LauncherApp
+from launcher.launcher_app import LauncherApp
 
 LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/dev/{LAUNCHER_PATH}"
 
@@ -53,7 +53,7 @@ def create_launcher_files(file_to_dl, result_file_path, force=False):
 
 def start_launcher(args):
     if args.version:
-        print(LAUNCHER_VERSION)
+        print(VERSION)
     else:
         if args.update_launcher:
             update_launcher(force=True)
