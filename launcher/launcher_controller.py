@@ -29,7 +29,7 @@ import requests
 from launcher import CONFIG_FILE, OCTOBOT_NAME, GITHUB_API_CONTENT_URL, OCTOBOT_GITHUB_REPOSITORY, \
     GITHUB_RAW_CONTENT_URL, VERSION_DEV_PHASE, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, DeliveryPlatformsName, \
     TENTACLES_PATH, CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, CONFIG_INTERFACES, \
-    CONFIG_INTERFACES_WEB, OCTOBOT_BACKGROUND_IMAGE, OCTOBOT_ICON
+    CONFIG_INTERFACES_WEB, OCTOBOT_BACKGROUND_IMAGE, OCTOBOT_ICON, LAUNCHER_GITHUB_REPOSITORY
 
 FOLDERS_TO_CREATE = ["logs", "backtesting/collector/data"]
 FILES_TO_DOWNLOAD = [
@@ -69,7 +69,8 @@ IMAGES_TO_DOWNLOAD = [
     )
 ]
 
-GITHUB_LATEST_RELEASE_URL = f"{GITHUB_API_CONTENT_URL}/repos/{OCTOBOT_GITHUB_REPOSITORY}/releases/latest"
+GITHUB_LATEST_BOT_RELEASE_URL = f"{GITHUB_API_CONTENT_URL}/repos/{OCTOBOT_GITHUB_REPOSITORY}/releases/latest"
+GITHUB_LATEST_LAUNCHER_RELEASE_URL = f"{GITHUB_API_CONTENT_URL}/repos/{LAUNCHER_GITHUB_REPOSITORY}/releases/latest"
 
 LIB_FILES_DOWNLOAD_PROGRESS_SIZE = 5
 CREATE_FOLDERS_PROGRESS_SIZE = 5
@@ -209,14 +210,14 @@ class Launcher:
         return binary
 
     @staticmethod
-    def get_current_server_version(latest_release_data=None):
+    def get_current_server_version(release_url, latest_release_data=None):
         if not latest_release_data:
-            latest_release_data = Launcher.get_latest_release_data()
+            latest_release_data = Launcher.get_latest_release_data(release_url)
         return latest_release_data["tag_name"]
 
     @staticmethod
-    def get_latest_release_data():
-        return json.loads(requests.get(GITHUB_LATEST_RELEASE_URL).text)
+    def get_latest_release_data(release_url):
+        return json.loads(requests.get(release_url).text)
 
     @staticmethod
     def execute_command_on_current_bot(binary_path, commands):

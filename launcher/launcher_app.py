@@ -24,7 +24,7 @@ from tkinter.ttk import Progressbar, Label, Button
 
 from launcher import launcher_controller
 from launcher.app_util import AbstractTkApp
-from launcher.launcher_controller import Launcher
+from launcher.launcher_controller import Launcher, GITHUB_LATEST_BOT_RELEASE_URL, GITHUB_LATEST_LAUNCHER_RELEASE_URL
 
 from launcher import PROJECT_NAME, VERSION
 
@@ -65,10 +65,11 @@ class LauncherApp(AbstractTkApp):
         self.update_launcher_button = Button(self.top_frame, command=self.update_launcher_handler,
                                              text="Update Launcher", style='Bot.TButton')
         self.launcher_version_label = Label(self.top_frame,
-                                            text=f"Launcher version : {VERSION}",
+                                            text="",
                                             style='Bot.TLabel')
         self.update_launcher_button.grid(row=2, column=2, padx=200, pady=5)
         self.launcher_version_label.grid(row=2, column=1, )
+        self.update_launcher_version()
 
         # buttons
         self.start_bot_button = Button(self.top_frame, command=self.start_bot_handler,
@@ -124,12 +125,21 @@ class LauncherApp(AbstractTkApp):
                 self.stop()
 
     def update_bot_version(self):
-        current_server_version = launcher_controller.Launcher.get_current_server_version()
+        current_server_bot_version = launcher_controller.Launcher.get_current_server_version(
+            GITHUB_LATEST_BOT_RELEASE_URL)
         current_bot_version = launcher_controller.Launcher.get_current_bot_version()
         self.bot_version_label["text"] = f"Bot version : " \
                                          f"{current_bot_version if current_bot_version else 'Not found'}" \
                                          f" (Latest : " \
-                                         f"{current_server_version if current_server_version else 'Not found'})"
+                                         f"{current_server_bot_version if current_server_bot_version else 'Not found'})"
+
+    def update_launcher_version(self):
+        current_server_launcher_version = launcher_controller.Launcher.get_current_server_version(
+            GITHUB_LATEST_LAUNCHER_RELEASE_URL)
+        self.launcher_version_label["text"] = f"Launcher version : " \
+            f"{VERSION} (Latest : " \
+            f"{current_server_launcher_version if current_server_launcher_version else 'Not found'})"
+
 
     @staticmethod
     def update_bot(app=None):
