@@ -77,6 +77,10 @@ CREATE_FOLDERS_PROGRESS_SIZE = 5
 BINARY_DOWNLOAD_PROGRESS_SIZE = 75
 TENTACLES_UPDATE_INSTALL_PROGRESS_SIZE = 15
 
+WINDOWS_OS_NAME = "nt"
+MAC_OS_NAME = "mac"
+LINUX_OS_NAME = "posix"
+
 
 class Launcher:
     def __init__(self, inst_app):
@@ -196,14 +200,14 @@ class Launcher:
 
         try:
             # try to found in current folder binary
-            if os.name == 'posix':
+            if os.name == LINUX_OS_NAME:
                 binary = "./" + next(iter(glob.glob(f'{OCTOBOT_NAME}*')))
 
-            elif os.name == 'nt':
+            elif os.name == WINDOWS_OS_NAME:
                 binary = next(iter(glob.glob(f'{OCTOBOT_NAME}*.exe')))
 
-            elif os.name == 'mac':
-                pass
+            elif os.name == MAC_OS_NAME:
+                binary = "./" + next(iter(glob.glob(f'{OCTOBOT_NAME}*')))
         except StopIteration:
             binary = None
 
@@ -246,11 +250,11 @@ class Launcher:
         os_name = None
 
         # windows
-        if os.name == 'nt':
+        if os.name == WINDOWS_OS_NAME:
             os_name = DeliveryPlatformsName.WINDOWS
 
         # linux
-        if os.name == 'posix':
+        if os.name == LINUX_OS_NAME:
             os_name = DeliveryPlatformsName.LINUX
 
         # mac
@@ -310,8 +314,7 @@ class Launcher:
             self.launcher_app.inc_progress(TENTACLES_UPDATE_INSTALL_PROGRESS_SIZE, to_max=True)
 
     def binary_execution_rights(self, binary_path):
-        if os.name == 'posix':
-
+        if os.name in [LINUX_OS_NAME, MAC_OS_NAME]:
             try:
                 rights_process = subprocess.Popen(["chmod", "+x", binary_path])
             except Exception as e:
@@ -321,7 +324,7 @@ class Launcher:
             if not rights_process:
                 # show message if user has to type the command
                 message = f"{OCTOBOT_NAME} binary need execution rights, " \
-                          f"please type in a command line 'sudo chmod +x ./{OCTOBOT_NAME}'"
+                    f"please type in a command line 'sudo chmod +x ./{OCTOBOT_NAME}'"
                 logging.warning(message)
                 if self.launcher_app:
                     self.launcher_app.show_alert(f"{message} and then press OK", bitmap=WARNING)
