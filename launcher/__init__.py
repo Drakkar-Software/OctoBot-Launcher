@@ -51,4 +51,4 @@ OCTOBOT_ICON = "static/favicon.ico"
 class DeliveryPlatformsName(Enum):
     WINDOWS = "windows"
     LINUX = "linux"
-    MAC = "mac"
+    MAC = "osx"
