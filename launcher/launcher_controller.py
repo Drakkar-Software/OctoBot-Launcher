@@ -24,6 +24,7 @@ from distutils.version import LooseVersion
 from subprocess import PIPE
 from tkinter.messagebox import WARNING
 
+import pkg_resources
 import requests
 
 from launcher import CONFIG_FILE, OCTOBOT_NAME, GITHUB_API_CONTENT_URL, OCTOBOT_GITHUB_REPOSITORY, \
@@ -165,35 +166,41 @@ class Launcher:
         # parse latest release
         try:
             logging.info(f"{OCTOBOT_NAME} is checking for updates...")
-            latest_release_data = self.get_latest_release_data()
+            latest_release_data = self.get_latest_release_data(GITHUB_LATEST_BOT_RELEASE_URL)
 
-            # try to found in current folder binary
+            # try to find binary / package
             binary_path = self.get_local_bot_binary()
 
-            # if current octobot binary found
-            if binary_path:
-                logging.info(f"{OCTOBOT_NAME} installation found, analyzing...")
-
-                last_release_version = latest_release_data["tag_name"]
-                current_bot_version = self.get_current_bot_version(binary_path)
-
-                try:
-                    check_new_version = LooseVersion(current_bot_version) < LooseVersion(last_release_version)
-                except AttributeError:
-                    check_new_version = False
-
-                if check_new_version:
-                    logging.info(f"Upgrading {OCTOBOT_NAME} : from {current_bot_version} to {last_release_version}...")
-                    return self.download_binary(latest_release_data, replace=True)
-                else:
-                    logging.info(f"Nothing to do : {OCTOBOT_NAME} is up to date")
-                    if self.launcher_app:
-                        self.launcher_app.inc_progress(BINARY_DOWNLOAD_PROGRESS_SIZE)
-                    return binary_path
+            if self.is_bot_package_installed():
+                return binary_path
             else:
-                return self.download_binary(latest_release_data)
+                # try to find in current folder binary
+                # if current octobot binary found
+                if binary_path:
+                    logging.info(f"{OCTOBOT_NAME} installation found, analyzing...")
+                    return self.get_local_version_or_download(binary_path, latest_release_data)
+                else:
+                    return self.download_binary(latest_release_data)
         except Exception as e:
             logging.exception(f"Failed to download latest release data : {e}")
+
+    def get_local_version_or_download(self, binary_path, latest_release_data):
+        last_release_version = latest_release_data["tag_name"]
+        current_bot_version = self.get_current_bot_version(binary_path)
+
+        try:
+            check_new_version = LooseVersion(current_bot_version) < LooseVersion(last_release_version)
+        except AttributeError:
+            check_new_version = False
+
+        if check_new_version:
+            logging.info(f"Upgrading {OCTOBOT_NAME} : from {current_bot_version} to {last_release_version}...")
+            return self.download_binary(latest_release_data, replace=True)
+        else:
+            logging.info(f"Nothing to do : {OCTOBOT_NAME} is up to date")
+            if self.launcher_app:
+                self.launcher_app.inc_progress(BINARY_DOWNLOAD_PROGRESS_SIZE)
+            return binary_path
 
     @staticmethod
     def get_current_bot_version(binary_path=None):
@@ -202,21 +209,32 @@ class Launcher:
         return Launcher.execute_command_on_current_bot(binary_path, ["--version"])
 
     @staticmethod
+    def is_bot_package_installed():
+        try:
+            pkg_resources.get_distribution(OCTOBOT_NAME)
+            return True
+        except pkg_resources.DistributionNotFound:
+            return False
+
+    @staticmethod
     def get_local_bot_binary():
         binary = None
 
-        try:
-            # try to found in current folder binary
-            if os.name == LINUX_OS_NAME:
-                binary = "./" + next(iter(glob.glob(f'{OCTOBOT_NAME}*')))
+        if Launcher.is_bot_package_installed():
+            binary = OCTOBOT_NAME
+        else:
+            try:
+                # try to found in current folder binary
+                if os.name == LINUX_OS_NAME:
+                    binary = f"./{next(iter(glob.glob(f'{OCTOBOT_NAME}*')))}"
 
-            elif os.name == WINDOWS_OS_NAME:
-                binary = next(iter(glob.glob(f'{OCTOBOT_NAME}*.exe')))
+                elif os.name == WINDOWS_OS_NAME:
+                    binary = next(iter(glob.glob(f'{OCTOBOT_NAME}*.exe')))
 
-            elif os.name == MAC_OS_NAME:
-                binary = "./" + next(iter(glob.glob(f'{OCTOBOT_NAME}*')))
-        except StopIteration:
-            binary = None
+                elif os.name == MAC_OS_NAME:
+                    binary = f"./{next(iter(glob.glob(f'{OCTOBOT_NAME}*')))}"
+            except StopIteration:
+                binary = None
 
         return binary
 

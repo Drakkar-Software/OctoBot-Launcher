@@ -22,7 +22,9 @@ from time import sleep
 from tkinter.dialog import Dialog, DIALOG_ICON
 from tkinter.ttk import Progressbar, Label, Button
 
-from launcher import launcher_controller
+import pkg_resources
+
+from launcher import launcher_controller, OCTOBOT_NAME
 from launcher.app_util import AbstractTkApp
 from launcher.launcher_controller import Launcher, GITHUB_LATEST_BOT_RELEASE_URL, GITHUB_LATEST_LAUNCHER_RELEASE_URL
 
@@ -127,11 +129,22 @@ class LauncherApp(AbstractTkApp):
     def update_bot_version(self):
         current_server_bot_version = launcher_controller.Launcher.get_current_server_version(
             GITHUB_LATEST_BOT_RELEASE_URL)
-        current_bot_version = launcher_controller.Launcher.get_current_bot_version()
+
+        if Launcher.is_bot_package_installed():
+            current_bot_version = self.update_bot_version_from_package()
+        else:
+            current_bot_version = self.update_bot_version_from_binary()
+
         self.bot_version_label["text"] = f"Bot version : " \
-                                         f"{current_bot_version if current_bot_version else 'Not found'}" \
-                                         f" (Latest : " \
-                                         f"{current_server_bot_version if current_server_bot_version else 'Not found'})"
+            f"{current_bot_version if current_bot_version else 'Not found'}" \
+            f" (Latest : " \
+            f"{current_server_bot_version if current_server_bot_version else 'Not found'})"
+
+    def update_bot_version_from_package(self):
+        return pkg_resources.get_distribution(OCTOBOT_NAME).version
+
+    def update_bot_version_from_binary(self):
+        return launcher_controller.Launcher.get_current_bot_version()
 
     def update_launcher_version(self):
         current_server_launcher_version = launcher_controller.Launcher.get_current_server_version(
