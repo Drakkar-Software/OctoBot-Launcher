@@ -41,6 +41,7 @@ class LauncherApp(AbstractTkApp):
         self.progress_label = None
         self.start_bot_button = None
         self.update_bot_button = None
+        self.update_package_button = None
         self.bot_version_label = None
         self.launcher_version_label = None
         self.update_launcher_button = None
@@ -77,6 +78,9 @@ class LauncherApp(AbstractTkApp):
         self.start_bot_button = Button(self.top_frame, command=self.start_bot_handler,
                                        text="Start Octobot", style='Bot.TButton')
         self.start_bot_button.grid(row=3, column=1)
+        self.update_package_button = Button(self.top_frame, command=self.update_package_handler,
+                                            text="Install/Update Package", style='Bot.TButton')
+        self.update_package_button.grid(row=3, column=2)
 
         # bottom
         self.progress = Progressbar(self.bottom_frame, orient="horizontal",
@@ -102,6 +106,11 @@ class LauncherApp(AbstractTkApp):
     def update_bot_handler(self):
         if not self.processing:
             thread = Thread(target=self.update_bot, args=(self,))
+            thread.start()
+
+    def update_package_handler(self):
+        if not self.processing:
+            thread = Thread(target=self.update_package, args=(self,))
             thread.start()
 
     def update_launcher_handler(self):
@@ -153,12 +162,21 @@ class LauncherApp(AbstractTkApp):
             f"{VERSION} (Latest : " \
             f"{current_server_launcher_version if current_server_launcher_version else 'Not found'})"
 
-
     @staticmethod
     def update_bot(app=None):
         if app:
             app.processing = True
         launcher_controller.Launcher(app)
+        if app:
+            app.processing = False
+            sleep(1)
+            app.update_bot_version()
+
+    @staticmethod
+    def update_package(app=None):
+        if app:
+            app.processing = True
+        launcher_controller.Launcher(app, force_package=True)
         if app:
             app.processing = False
             sleep(1)
