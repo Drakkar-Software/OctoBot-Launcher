@@ -19,6 +19,7 @@ import json
 import logging
 import os
 import subprocess
+import sys
 import urllib.request
 from distutils.version import LooseVersion
 from subprocess import PIPE
@@ -86,12 +87,12 @@ LINUX_OS_NAME = "posix"
 
 
 class Launcher:
-    def __init__(self, inst_app):
+    def __init__(self, inst_app, force_package=False):
         self.launcher_app = inst_app
 
         self.create_environment()
 
-        binary_path = self.update_binary()
+        binary_path = self.update_binary(force_package=force_package)
 
         # give binary execution rights if necessary
         if binary_path:
@@ -162,7 +163,7 @@ class Launcher:
 
         logging.info(f"Your {OCTOBOT_NAME} environment is ready !")
 
-    def update_binary(self):
+    def update_binary(self, force_package=False):
         # parse latest release
         try:
             logging.info(f"{OCTOBOT_NAME} is checking for updates...")
@@ -171,7 +172,8 @@ class Launcher:
             # try to find binary / package
             binary_path = self.get_local_bot_binary()
 
-            if self.is_bot_package_installed():
+            if self.is_bot_package_installed() or force_package:
+                self.download_package()
                 return binary_path
             else:
                 # try to find in current folder binary
@@ -242,7 +244,10 @@ class Launcher:
     def get_current_server_version(release_url, latest_release_data=None):
         if not latest_release_data:
             latest_release_data = Launcher.get_latest_release_data(release_url)
-        return latest_release_data["tag_name"]
+        try:
+            return latest_release_data["tag_name"]
+        except KeyError:
+            return "Not found"
 
     @staticmethod
     def get_latest_release_data(release_url):
@@ -292,6 +297,16 @@ class Launcher:
             if f"{OCTOBOT_NAME}_{os_name.value}" in asset_name:
                 return asset
         return None
+
+    @staticmethod
+    def download_package():
+        try:
+            cmd = [sys.executable, "-m", "pip", "install", "-U", OCTOBOT_NAME]
+            return subprocess.Popen(cmd, stdout=PIPE).stdout.read().rstrip().decode()
+        except PermissionError as e:
+            logging.error(f"Failed to update package : {e}")
+        except FileNotFoundError as e:
+            logging.error(f"Can't find a valid python executable : {e}")
 
     def download_binary(self, latest_release_data, replace=False):
         binary = self.get_asset_from_release_data(latest_release_data)
