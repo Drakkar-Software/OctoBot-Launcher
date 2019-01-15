@@ -29,11 +29,11 @@ setup(
     py_modules=['entrypoint'],
     packages=['launcher'],
     long_description='Cryptocurrencies alert / trading bot',
-    install_requires=['requests'],
+    install_requires=['OctoBot', 'requests'],
     tests_require=['pytest'],
     test_suite="tests",
     zip_safe=False,
-    python_requires='>=3.7',
+    python_requires='>=3.7.2',
     entry_points={
         'console_scripts': [
             PROJECT_NAME + ' = entrypoint:main'
@@ -46,6 +46,6 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Operating System :: POSIX',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.7.2',
     ],
 )

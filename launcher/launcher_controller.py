@@ -32,13 +32,15 @@ from launcher import CONFIG_FILE, OCTOBOT_NAME, GITHUB_API_CONTENT_URL, OCTOBOT_
     CONFIG_INTERFACES_WEB, OCTOBOT_BACKGROUND_IMAGE, OCTOBOT_ICON, LAUNCHER_GITHUB_REPOSITORY
 
 FOLDERS_TO_CREATE = ["logs", "backtesting/collector/data"]
-FILES_TO_DOWNLOAD = [
+INSTALL_DOWNLOAD = [
     (
         f"{GITHUB_RAW_CONTENT_URL}/cjhutto/vaderSentiment/master/vaderSentiment/emoji_utf8_lexicon.txt",
         "vaderSentiment/emoji_utf8_lexicon.txt"),
     (
         f"{GITHUB_RAW_CONTENT_URL}/cjhutto/vaderSentiment/master/vaderSentiment/vader_lexicon.txt",
         "vaderSentiment/vader_lexicon.txt"),
+]
+FILES_TO_DOWNLOAD = [
     (
         f"{GITHUB_RAW_CONTENT_URL}/{OCTOBOT_GITHUB_REPOSITORY}/{VERSION_DEV_PHASE}/{DEFAULT_CONFIG_FILE}",
         CONFIG_FILE
@@ -112,7 +114,6 @@ class Launcher:
         need_to_create_environment = False
         try:
             for file_to_dl in IMAGES_TO_DOWNLOAD:
-
                 Launcher._ensure_directory(file_to_dl[1])
 
                 file_name = file_to_dl[1]
@@ -125,16 +126,16 @@ class Launcher:
             for folder in FOLDERS_TO_CREATE:
                 if not os.path.exists(folder) and folder:
                     os.makedirs(folder)
+
+            Launcher.ensure_file_environment(FILES_TO_DOWNLOAD)
         except Exception as e:
             print(f"Error when creating minimum launcher environment: {e} this should not prevent launcher "
                   f"from working.")
 
-    def create_environment(self):
-        self.launcher_app.inc_progress(0, to_min=True)
-        logging.info(f"{OCTOBOT_NAME} is checking your environment...")
-
+    @staticmethod
+    def ensure_file_environment(file_to_download):
         # download files
-        for file_to_dl in FILES_TO_DOWNLOAD:
+        for file_to_dl in file_to_download:
 
             Launcher._ensure_directory(file_to_dl[1])
 
@@ -143,6 +144,12 @@ class Launcher:
                 with open(file_name, "wb") as new_file_from_dl:
                     file_content = requests.get(file_to_dl[0]).text
                     new_file_from_dl.write(file_content.encode())
+
+    def create_environment(self):
+        self.launcher_app.inc_progress(0, to_min=True)
+        logging.info(f"{OCTOBOT_NAME} is checking your environment...")
+
+        self.ensure_file_environment(INSTALL_DOWNLOAD)
 
         self.launcher_app.window.update()
 
