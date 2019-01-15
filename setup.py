@@ -29,7 +29,7 @@ setup(
     py_modules=['entrypoint'],
     packages=['launcher'],
     long_description='Cryptocurrencies alert / trading bot',
-    install_requires=['OctoBot', 'requests'],
+    install_requires=['requests'],
     tests_require=['pytest'],
     test_suite="tests",
     zip_safe=False,
