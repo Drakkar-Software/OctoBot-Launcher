@@ -32,6 +32,8 @@ script:
 before_deploy:
   - pyinstaller bin/launcher.spec
   - mv dist/launcher dist/launcher_$TRAVIS_OS_NAME
+  - python3 setup.py sdist bdist_wheel
+  - python3 -m twine check dist/*
 
 deploy:
   - provider: pypi
@@ -40,6 +42,7 @@ deploy:
     password:
       secure: LDxZV2mJ6BB5bAt2XSf9AjWgUEJValfNHeiGZuH4WNsxgCQqOIRDhP1om/q8zL47c6iYHvV9N5h9xC0Nz9mIKVJxL8HWReJ8i4jYaE6dn+FKGNWZED5KJa0fTTsQUVdRhekU92fV8JMSgFKf8JI4kEofb4NNpgD3oC8zS16oG0CC4TZ90KWgunU5HJrV2m4tSw86wLJDehpPjnucan217oTuBTZxG8S+cNF7qVc0oSbJFOTW1jtGwFc6T9bLMF5CELRoChcpY3BhRGhu21LjCLwFc/BY0wNfTzlrY1sNlM1KorRvikIYWL8F0wHNCewztBORUIGgcYgvXj2I/Endrti4CdfcySHTMqn2uffv99gFinIftMy+F1E37cM7vRUY08na2jqH/3k2rrE/vKeLep1Lzk4LkaBG72Co0t509sORAFzQoIrVdnJPf5ZidJzEaivwi3ZG1/GkmXC5ERH5CBwWihHF4itdi0deSsmWKbHthJCEw3emqEhrbDAwwfdIV2MuwGmxvJ5oxjZBBSzpblO7b0LdHhoEqdeqbBs5BHVRwjmsNia86dxvzZH6lj7ylllAl6Z7XENynOUNUqgLhbQeDioR3EWLUTvXnGf3+gPieSPmD4F+YYfLzwIjRMWmu0yLX9N57DrkM/fAlq3l8AVnjX9TZFk7iVyuNkUfmYQ=
     skip_existing: false
+    distributions: "sdist bdist_wheel"
     on:
       repo: Drakkar-Software/OctoBot-Launcher
       branch: master
