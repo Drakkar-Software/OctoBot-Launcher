@@ -31,7 +31,7 @@ script:
 
 before_deploy:
   - pyinstaller bin/launcher.spec
-  - mv dist/launcher dist/launcher_$TRAVIS_OS_NAME
+  - mv dist/launcher ./launcher_$TRAVIS_OS_NAME && rm -rf dist/
   - python3 setup.py sdist bdist_wheel
   - python3 -m twine check dist/*
 
@@ -42,6 +42,7 @@ deploy:
     password:
       secure: LDxZV2mJ6BB5bAt2XSf9AjWgUEJValfNHeiGZuH4WNsxgCQqOIRDhP1om/q8zL47c6iYHvV9N5h9xC0Nz9mIKVJxL8HWReJ8i4jYaE6dn+FKGNWZED5KJa0fTTsQUVdRhekU92fV8JMSgFKf8JI4kEofb4NNpgD3oC8zS16oG0CC4TZ90KWgunU5HJrV2m4tSw86wLJDehpPjnucan217oTuBTZxG8S+cNF7qVc0oSbJFOTW1jtGwFc6T9bLMF5CELRoChcpY3BhRGhu21LjCLwFc/BY0wNfTzlrY1sNlM1KorRvikIYWL8F0wHNCewztBORUIGgcYgvXj2I/Endrti4CdfcySHTMqn2uffv99gFinIftMy+F1E37cM7vRUY08na2jqH/3k2rrE/vKeLep1Lzk4LkaBG72Co0t509sORAFzQoIrVdnJPf5ZidJzEaivwi3ZG1/GkmXC5ERH5CBwWihHF4itdi0deSsmWKbHthJCEw3emqEhrbDAwwfdIV2MuwGmxvJ5oxjZBBSzpblO7b0LdHhoEqdeqbBs5BHVRwjmsNia86dxvzZH6lj7ylllAl6Z7XENynOUNUqgLhbQeDioR3EWLUTvXnGf3+gPieSPmD4F+YYfLzwIjRMWmu0yLX9N57DrkM/fAlq3l8AVnjX9TZFk7iVyuNkUfmYQ=
     skip_existing: false
+    skip_cleanup: true
     distributions: "sdist bdist_wheel"
     on:
       repo: Drakkar-Software/OctoBot-Launcher
@@ -50,7 +51,7 @@ deploy:
   - provider: releases
     api_key:
       secure: cQaezwO+v0d3NJu2oY0+7e3JngZkSju+dXTUimIyTfZGDUaS7yCeGW5Q0Zb+LolEXYuMWdcv0VaIKZjSL5Yb4ROaTk9qg5g1jnHk8ntzxlemKAk/ahmsIe+MSx14g1PAGYTJBGftWTAqzZ/ZWMBQqSgL2zhxI5gLprnaDfRA4z1mZXNCGo8MASTI9mf+jrIt9rQsJ2pjldTTP7G5ofJfqqg3JLafcWQl6vg5HwaisFRlrtfyWurZIhA8y95Qrin51Kyj2jlxABVqA0mgC6cf2SpvYlID2sG/JzH2SWWQ1JO4wt832aACQAr3trDr/+Ko5ivJJXYqetDCvgTwd4V+4CmO5YyCcPZAOmLJVnY1I3svhWXR/XQqqK4hfMN42KC2NlHVCXvD/gYpbbJKwcAeGQI28tDjV9yZe8ZEu095pFb8AUPJVd40vNTAcYgScfIWneJ7NR0I/LK/itUmjeIOU6k+f1X94yKgNlZeAjAtBc/45Am/He1uCMVI4RD8yqlLBUqh9ofOvdzkNBOmkJ4xieJVsyrR/+QjNnOlFgt+ZDAKLhOr3RLqzy4FS7C+RrJIb0HZfSjnruj5HOdLEOubDdf3s2sbhWyl/DVJ/m1D/kLSitgql9ME3RYmTHadNRSw0u3jF5nATuin6iNZdG7VroiIacsIUlzbkx2UO/kGY1g=
-    file: dist/launcher_$TRAVIS_OS_NAME
+    file: ./launcher_$TRAVIS_OS_NAME
     skip_cleanup: true
     name: Release - $TRAVIS_TAG
     on:
