@@ -32,8 +32,7 @@ script:
 before_deploy:
   - pyinstaller bin/launcher.spec
   - mv dist/launcher ./launcher_$TRAVIS_OS_NAME && rm -rf dist/
-  - python3 setup.py sdist bdist_wheel
-  - python3 -m twine check dist/*
+  - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then python3 setup.py sdist bdist_wheel && python3 -m twine check dist/*; fi
 
 deploy:
   - provider: releases
@@ -58,3 +57,4 @@ deploy:
       repo: Drakkar-Software/OctoBot-Launcher
       branch: master
       tags: true
+      condition: $TRAVIS_OS_NAME = 'linux'
