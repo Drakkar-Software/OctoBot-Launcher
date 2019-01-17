@@ -17,8 +17,15 @@ from enum import Enum
 
 PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_NAME = "OctoBot"
-VERSION = "1.0.9-a"
-VERSION_DEV_PHASE = "beta"
+SHORT_VERSION = "1.1.0"
+PATCH_VERSION = ""  # .patch
+VERSION_DEV_PHASE = "rc"  # alpha : a / beta : b / release candidate : rc
+VERSION_PHASE = "1"  # XX
+VERSION = f"{SHORT_VERSION}{VERSION_DEV_PHASE}{VERSION_PHASE}"
+LONG_VERSION = f"{SHORT_VERSION}{PATCH_VERSION}{VERSION_DEV_PHASE}{VERSION_PHASE}"
+
+OCTOBOT_VERSION_RELEASE_PHASE = "beta"
+OCTOBOT_LAUNCHER_VERSION_BRANCH = "master"
 
 DEFAULT_CONFIG_FILE = "config/default_config.json"
 LOGGING_CONFIG_FILE = "config/logging_config.ini"
