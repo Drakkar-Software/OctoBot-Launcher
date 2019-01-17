@@ -20,12 +20,14 @@ import sys
 
 import requests
 
-from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, LAUNCHER_PATH, VERSION
+from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
+    LAUNCHER_PATH, VERSION, OCTOBOT_LAUNCHER_VERSION_BRANCH
 
-# should have VERSION_DEV_PHASE
+
 from launcher.launcher_app import LauncherApp
 
-LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/dev/{LAUNCHER_PATH}"
+# should have OCTOBOT_LAUNCHER_VERSION_BRANCH
+LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/{OCTOBOT_LAUNCHER_VERSION_BRANCH}/{LAUNCHER_PATH}"
 
 LAUNCHER_FILES = ["__init__.py", "launcher_app.py", "launcher_controller.py", "app_util.py"]
 
@@ -59,6 +61,8 @@ def start_launcher(args):
             update_launcher(force=True)
         elif args.update:
             LauncherApp.update_bot()
+        elif args.start:
+            LauncherApp().start_bot_handler()
         elif args.export_logs:
             LauncherApp.export_logs()
         else:
