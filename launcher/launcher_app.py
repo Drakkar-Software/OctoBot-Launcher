@@ -40,6 +40,7 @@ class LauncherApp(AbstractTkApp):
         self.progress = None
         self.progress_label = None
         self.start_bot_button = None
+        self.bot_install_update_label = None
         self.update_bot_button = None
         self.update_package_button = None
         self.bot_version_label = None
@@ -55,12 +56,19 @@ class LauncherApp(AbstractTkApp):
 
     def create_components(self):
         # bot update
+        self.bot_install_update_label = Label(self.top_frame,
+                                              text="Install/Update Octobot with ",
+                                              style='Bot.TLabel')
         self.update_bot_button = Button(self.top_frame, command=self.update_bot_handler,
-                                        text="Install/Update Octobot", style='Bot.TButton')
+                                        text="Binary", style='Bot.TButton')
+        self.update_package_button = Button(self.top_frame, command=self.update_package_handler,
+                                            text="Package", style='Bot.TButton')
         self.bot_version_label = Label(self.top_frame,
                                        text="",
                                        style='Bot.TLabel')
-        self.update_bot_button.grid(row=1, column=2, padx=200, pady=5)
+        self.bot_install_update_label.grid(row=1, column=2, padx=30)
+        self.update_bot_button.grid(row=1, column=3)
+        self.update_package_button.grid(row=1, column=4)
         self.bot_version_label.grid(row=1, column=1)
         self.update_bot_version()
 
@@ -70,7 +78,7 @@ class LauncherApp(AbstractTkApp):
         self.launcher_version_label = Label(self.top_frame,
                                             text="",
                                             style='Bot.TLabel')
-        self.update_launcher_button.grid(row=2, column=2, padx=200, pady=5)
+        self.update_launcher_button.grid(row=2, column=2)
         self.launcher_version_label.grid(row=2, column=1, )
         self.update_launcher_version()
 
@@ -78,9 +86,6 @@ class LauncherApp(AbstractTkApp):
         self.start_bot_button = Button(self.top_frame, command=self.start_bot_handler,
                                        text="Start Octobot", style='Bot.TButton')
         self.start_bot_button.grid(row=3, column=1)
-        self.update_package_button = Button(self.top_frame, command=self.update_package_handler,
-                                            text="Install/Update Package", style='Bot.TButton')
-        self.update_package_button.grid(row=3, column=2)
 
         # bottom
         self.progress = Progressbar(self.bottom_frame, orient="horizontal",
