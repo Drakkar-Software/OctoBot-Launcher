@@ -1,5 +1,12 @@
 *It is strongly advised to perform an update of your tentacles after updating OctoBot.*
 
+Changelog for 1.0.9
+====================
+*Released date : January 17 2019*
+
+# Features :
+    - Small fixes
+
 Changelog for 1.0.8
 ====================
 *Released date : January 15 2019*

@@ -17,7 +17,7 @@ from enum import Enum
 
 PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_NAME = "OctoBot"
-VERSION = "1.0.8"
+VERSION = "1.0.9"
 VERSION_DEV_PHASE = "beta"
 
 DEFAULT_CONFIG_FILE = "config/default_config.json"
