@@ -120,13 +120,13 @@ class LauncherApp(AbstractTkApp):
 
     def update_launcher_handler(self):
         if not self.processing:
-            launcher_process = subprocess.Popen([sys.executable, "--update_launcher"])
+            launcher_process = subprocess.Popen([sys.executable, __file__, "-l"])
 
             if launcher_process:
                 self.hide()
                 launcher_process.wait()
 
-                new_launcher_process = subprocess.Popen([sys.executable])
+                new_launcher_process = subprocess.Popen([sys.executable, __file__])
 
                 if new_launcher_process:
                     self.stop()

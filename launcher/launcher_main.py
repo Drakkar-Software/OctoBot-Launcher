@@ -23,9 +23,6 @@ import requests
 from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
     LAUNCHER_PATH, VERSION, OCTOBOT_LAUNCHER_VERSION_BRANCH
 
-
-from launcher.launcher_app import LauncherApp
-
 # should have OCTOBOT_LAUNCHER_VERSION_BRANCH
 LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/{OCTOBOT_LAUNCHER_VERSION_BRANCH}/{LAUNCHER_PATH}"
 
@@ -57,6 +54,7 @@ def start_launcher(args):
     if args.version:
         print(VERSION)
     else:
+        from launcher.launcher_app import LauncherApp
         if args.update_launcher:
             update_launcher(force=True)
         elif args.update:
