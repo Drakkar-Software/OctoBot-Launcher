@@ -32,7 +32,7 @@ script:
 before_deploy:
   - pyinstaller bin/launcher.spec
   - mv dist/launcher ./launcher_$TRAVIS_OS_NAME && rm -rf dist/
-  - RELEASE_SHASUM=$(sha1sum ./launcher_$TRAVIS_OS_NAME)
+  - RELEASE_SHASUM=$(openssl sha1 ./launcher_$TRAVIS_OS_NAME)
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then python3 setup.py sdist bdist_wheel && python3 -m twine check dist/*; fi
 
 deploy:
@@ -52,7 +52,7 @@ deploy:
       secure: gCnxIfOj9GYRu3rAmoaE73VeELUzINK1ZseAYo4RY2lzJ+QHNiXcaQuHrj/CyyaTcrKOeHzvCtA5J5e3WQqU29ul3JaJXSIdWSamxyx9H3YdoxFs9PjXQhDx3pE/3DLDasvzDRZNCux6oZ31WzL7qdaZr1eYNrg75uIRusLYvLu4hwG41w0OZ5YjnehK98Lx5YkiXYq+Gw5FChLrliN3NYI9HoM13XWQcdghatgg+jzXW3Yp2svL7n4kw54WCZ+et50dC74+mDEG5VGK6/LcQzVipTIppdcK3qpHBhL65ZIxC0IUSJkD/Vrb4s53nF7RLm/XiLrpHdWGQ20KGMIB0b8VTOUnuCEcayW7Q6ieU405r7h+hvr+Qn37v+EI7+aUfWTnz73ZWYJ3o3F94hNYQfaNBEY98NEWscIx4esPvjYsMxXIb/LvxjMQAZP1SWwiQ+DFgxTZNUXgk7cpaJkTzgBim6t5mwXnoQLRz/kC+B7CYg3wPxDJ8kwB7hJQzbkgul1ca83qBZHOSnpkESfkyjpVim1NZQkQH1D3T5Izp7i88epScV+0cBOtqOPiL9bPDZ4wve3/D1v2IsqqMAyiMTZF/QFa8hFvXL09QKKxoufl8/vuP7wUj1ebu0o+7qPhXS6gI6us4KUYYQdNMqZg/xHzSIiRAtFIlG8T+WpDcu8=
     password:
       secure: LDxZV2mJ6BB5bAt2XSf9AjWgUEJValfNHeiGZuH4WNsxgCQqOIRDhP1om/q8zL47c6iYHvV9N5h9xC0Nz9mIKVJxL8HWReJ8i4jYaE6dn+FKGNWZED5KJa0fTTsQUVdRhekU92fV8JMSgFKf8JI4kEofb4NNpgD3oC8zS16oG0CC4TZ90KWgunU5HJrV2m4tSw86wLJDehpPjnucan217oTuBTZxG8S+cNF7qVc0oSbJFOTW1jtGwFc6T9bLMF5CELRoChcpY3BhRGhu21LjCLwFc/BY0wNfTzlrY1sNlM1KorRvikIYWL8F0wHNCewztBORUIGgcYgvXj2I/Endrti4CdfcySHTMqn2uffv99gFinIftMy+F1E37cM7vRUY08na2jqH/3k2rrE/vKeLep1Lzk4LkaBG72Co0t509sORAFzQoIrVdnJPf5ZidJzEaivwi3ZG1/GkmXC5ERH5CBwWihHF4itdi0deSsmWKbHthJCEw3emqEhrbDAwwfdIV2MuwGmxvJ5oxjZBBSzpblO7b0LdHhoEqdeqbBs5BHVRwjmsNia86dxvzZH6lj7ylllAl6Z7XENynOUNUqgLhbQeDioR3EWLUTvXnGf3+gPieSPmD4F+YYfLzwIjRMWmu0yLX9N57DrkM/fAlq3l8AVnjX9TZFk7iVyuNkUfmYQ=
-    skip_existing: false
+    skip_existing: true
     skip_cleanup: true
     distributions: "sdist bdist_wheel"
     on:
