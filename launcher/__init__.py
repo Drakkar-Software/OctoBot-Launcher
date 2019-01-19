@@ -19,8 +19,8 @@ PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_NAME = "OctoBot"
 SHORT_VERSION = "1.1.0"
 PATCH_VERSION = ""  # .patch
-VERSION_DEV_PHASE = "rc"  # alpha : a / beta : b / release candidate : rc
-VERSION_PHASE = "1"  # XX
+VERSION_DEV_PHASE = ""  # alpha : a / beta : b / release candidate : rc
+VERSION_PHASE = ""  # XX
 VERSION = f"{SHORT_VERSION}{VERSION_DEV_PHASE}{VERSION_PHASE}"
 LONG_VERSION = f"{SHORT_VERSION}{PATCH_VERSION}{VERSION_DEV_PHASE}{VERSION_PHASE}"
 
