@@ -17,6 +17,7 @@ build_script:
   - "echo f | xcopy /f /y favicon.ico interfaces\\web\\static\\favicon.ico"
   - "%PYTHON%\\Scripts\\pyinstaller.exe bin/launcher.spec"
   - "echo f | xcopy /f /y dist\\launcher.exe dist\\launcher_windows.exe"
+  - "powershell get-filehash -algorithm sha1 dist\\launcher_windows.exe"
 
 test_script:
   - "%PYTHON%\\python.exe -m pytest"
