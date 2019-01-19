@@ -1,5 +1,11 @@
 *It is strongly advised to perform an update of your tentacles after updating OctoBot.*
 
+Changelog for 1.1.0-1
+====================
+*Released date : January 19 2019*
+
+- Fix tentacle installation issue
+
 Changelog for 1.1.0
 ====================
 *Released date : January 19 2019*

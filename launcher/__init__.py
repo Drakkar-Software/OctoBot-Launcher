@@ -18,7 +18,7 @@ from enum import Enum
 PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_NAME = "OctoBot"
 SHORT_VERSION = "1.1.0"
-PATCH_VERSION = ""  # .patch
+PATCH_VERSION = "-1"  # -patch
 VERSION_DEV_PHASE = ""  # alpha : a / beta : b / release candidate : rc
 VERSION_PHASE = ""  # XX
 VERSION = f"{SHORT_VERSION}{VERSION_DEV_PHASE}{VERSION_PHASE}"

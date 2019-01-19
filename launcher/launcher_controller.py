@@ -339,13 +339,8 @@ class Launcher:
             return None
 
     def update_tentacles(self, binary_path):
-        # if install required
-        if not os.path.exists(TENTACLES_PATH):
-            self.execute_command_on_current_bot(binary_path, ["-p", "install", "all"])
-            logging.info(f"Tentacles : all default tentacles have been installed.")
-
-        # update
-        else:
+        # update tentacles if installed
+        if os.path.exists(TENTACLES_PATH):
             self.execute_command_on_current_bot(binary_path, ["-p", "update", "all"])
             logging.info(f"Tentacles : all default tentacles have been updated.")
 
