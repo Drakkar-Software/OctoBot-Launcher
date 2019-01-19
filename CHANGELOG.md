@@ -1,5 +1,14 @@
 *It is strongly advised to perform an update of your tentacles after updating OctoBot.*
 
+Changelog for 1.1.0
+====================
+*Released date : January 19 2019*
+
+- Fix restart launcher issue
+- Checksum for releases
+- Support OctoBot package installation, update and start
+- Improve command line interface
+
 Changelog for 1.0.9-a
 ====================
 *Released date : January 17 2019*

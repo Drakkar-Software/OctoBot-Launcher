@@ -1,4 +1,4 @@
-# OctoBot-Launcher [1.0.9-a](https://github.com/Drakkar-Software/OctoBot-Launcher/tree/master/CHANGELOG.md)
+# OctoBot-Launcher [1.1.0](https://github.com/Drakkar-Software/OctoBot-Launcher/tree/master/CHANGELOG.md)
 [![PyPI](https://img.shields.io/pypi/v/OctoBot-Launcher.svg)](https://pypi.python.org/pypi/OctoBot-Launcher/)
 [![Release](https://img.shields.io/github/downloads/Drakkar-Software/OctoBot-Launcher/total.svg)](https://github.com/Drakkar-Software/OctoBot-Launcher/releases)
 [![Build Status](https://api.travis-ci.org/Drakkar-Software/OctoBot-Launcher.svg?branch=master)](https://travis-ci.org/Drakkar-Software/OctoBot-Launcher) 
