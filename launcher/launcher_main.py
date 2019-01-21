@@ -13,7 +13,7 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-
+import _tkinter
 import logging
 import os
 import sys
@@ -64,4 +64,7 @@ def start_launcher(args):
         elif args.export_logs:
             LauncherApp.export_logs()
         else:
-            LauncherApp()
+            try:
+                LauncherApp()
+            except _tkinter.TclError:
+                logging.error("Can't start gui, please try command line interface (use --help).")
