@@ -34,8 +34,10 @@ def main(args=sys.argv[1:]):
                         action='store_true')
     parser.add_argument('-l', '--update_launcher', help='update OctoBot Launcher with the latest version available',
                         action='store_true')
-    parser.add_argument('-s', '--start', help='start OctoBot',
-                        action='store_true')
+    parser.add_argument('-s', '--start', help='Start OctoBot. OctoBot starting options can be added after '
+                                              '-s or --start. Examples: "-s ng t" will start OctoBot '
+                                              'with "ng" option and "t" that will use telegram interface, without gui.',
+                        nargs='*')
     parser.add_argument('-ng', '--no_gui', help="Without gui",
                         action='store_true')
 
