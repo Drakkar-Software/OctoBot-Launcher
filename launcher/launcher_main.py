@@ -60,7 +60,7 @@ def start_launcher(args):
         elif args.update:
             LauncherApp.update_bot()
         elif args.start:
-            LauncherApp().start_bot_handler()
+            LauncherApp().start_bot_handler([f"-{arg}" for arg in args.start] if args.start else None)
         elif args.export_logs:
             LauncherApp.export_logs()
         else:

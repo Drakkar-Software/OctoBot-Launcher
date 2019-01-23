@@ -138,9 +138,9 @@ class LauncherApp(AbstractTkApp):
                 if new_launcher_process:
                     self.stop()
 
-    def start_bot_handler(self):
+    def start_bot_handler(self, args=None):
         if not self.processing:
-            bot_process = Launcher.execute_command_on_detached_bot()
+            bot_process = Launcher.execute_command_on_detached_bot(commands=args)
 
             if bot_process:
                 self.hide()
