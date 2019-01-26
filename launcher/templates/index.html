@@ -1,0 +1,15 @@
+{% block body %}
+<br>
+<div class="card">
+    <div class="card-header">
+        <h1>OctoBot-Launcher</h1>
+    </div>
+    <div class="card-body">
+        <button route="{{ url_for('install') }}" type="button" class="btn btn-success waves-effect">Install & Update Octobot</button>
+        <button route="{{ url_for('update') }}" type="button" class="btn btn-primary waves-effect">Update Octobot-Launcher</button>
+        <button route="{{ url_for('stop') }}" type="button" class="btn btn-danger waves-effect">Stop Octobot</button>
+    </div>
+</div>
+<br>
+{% endblock %}
+

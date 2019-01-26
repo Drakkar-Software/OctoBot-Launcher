@@ -19,35 +19,20 @@ import subprocess
 import sys
 from threading import Thread
 from time import sleep
-from tkinter.dialog import Dialog, DIALOG_ICON
-from tkinter.ttk import Progressbar, Label, Button
 
 import pkg_resources
 
-from launcher import launcher_controller, OCTOBOT_NAME
-from launcher.app_util import AbstractTkApp
-from launcher.launcher_controller import Launcher, GITHUB_LATEST_BOT_RELEASE_URL, GITHUB_LATEST_LAUNCHER_RELEASE_URL
-
 from launcher import PROJECT_NAME, VERSION
+from launcher import launcher_controller, OCTOBOT_NAME
+from launcher.launcher_controller import Launcher, GITHUB_LATEST_BOT_RELEASE_URL, GITHUB_LATEST_LAUNCHER_RELEASE_URL
+from launcher.web_app import WebApp
 
 
-class LauncherApp(AbstractTkApp):
+class LauncherApp(WebApp):
     PROGRESS_MIN = 0
     PROGRESS_MAX = 100
 
     def __init__(self):
-        self.window_title = f"{PROJECT_NAME} - Launcher"
-        self.progress = None
-        self.progress_label = None
-        self.start_bot_button = None
-        self.bot_install_update_label = None
-        self.update_bot_button = None
-        self.update_package_button = None
-        self.bot_version_label = None
-        self.launcher_version_label = None
-        self.update_launcher_button = None
-        self.export_logs_button = None
-
         Launcher.ensure_minimum_environment()
 
         self.processing = False
@@ -56,57 +41,19 @@ class LauncherApp(AbstractTkApp):
 
     def create_components(self):
         # bot update
-        self.bot_install_update_label = Label(self.top_frame,
-                                              text="Install/Update Octobot with ",
-                                              style='Bot.TLabel')
-        self.update_bot_button = Button(self.top_frame, command=self.update_bot_handler,
-                                        text="Binary", style='Bot.TButton')
-        self.update_package_button = Button(self.top_frame, command=self.update_package_handler,
-                                            text="Package", style='Bot.TButton')
-        self.bot_version_label = Label(self.top_frame,
-                                       text="",
-                                       style='Bot.TLabel')
-        self.bot_install_update_label.grid(row=1, column=2, padx=30)
-        self.update_bot_button.grid(row=1, column=3)
-        self.update_package_button.grid(row=1, column=4)
-        self.bot_version_label.grid(row=1, column=1)
-        self.update_bot_version()
-
-        # launcher update
-        self.update_launcher_button = Button(self.top_frame, command=self.update_launcher_handler,
-                                             text="Update Launcher", style='Bot.TButton')
-        self.launcher_version_label = Label(self.top_frame,
-                                            text="",
-                                            style='Bot.TLabel')
-        self.update_launcher_button.grid(row=2, column=2)
-        self.launcher_version_label.grid(row=2, column=1, )
-        self.update_launcher_version()
-
-        # buttons
-        self.start_bot_button = Button(self.top_frame, command=self.start_bot_handler,
-                                       text="Start Octobot", style='Bot.TButton')
-        self.start_bot_button.grid(row=3, column=1)
-
-        # bottom
-        self.progress = Progressbar(self.bottom_frame, orient="horizontal",
-                                    length=200, mode="determinate", style='Bot.Horizontal.TProgressbar')
-        self.progress.grid(row=1, column=1, padx=5, pady=5)
-        self.progress_label = Label(self.bottom_frame, text=f"{self.PROGRESS_MIN}%", style='Bot.TLabel')
-        self.progress_label.grid(row=1, column=2, padx=5)
-
-        self.progress["value"] = self.PROGRESS_MIN
-        self.progress["maximum"] = self.PROGRESS_MAX
+        pass
 
     def inc_progress(self, inc_size, to_min=False, to_max=False):
-        if to_max:
-            self.progress["value"] = self.PROGRESS_MAX
-            self.progress_label["text"] = f"{self.PROGRESS_MAX}%"
-        elif to_min:
-            self.progress["value"] = self.PROGRESS_MIN
-            self.progress_label["text"] = f"{self.PROGRESS_MIN}%"
-        else:
-            self.progress["value"] += inc_size
-            self.progress_label["text"] = f"{round(self.progress['value'], 1)}%"
+        # if to_max:
+        #     self.progress["value"] = self.PROGRESS_MAX
+        #     self.progress_label["text"] = f"{self.PROGRESS_MAX}%"
+        # elif to_min:
+        #     self.progress["value"] = self.PROGRESS_MIN
+        #     self.progress_label["text"] = f"{self.PROGRESS_MIN}%"
+        # else:
+        #     self.progress["value"] += inc_size
+        #     self.progress_label["text"] = f"{round(self.progress['value'], 1)}%"
+        pass
 
     def update_bot_handler(self):
         if not self.processing:
@@ -156,10 +103,11 @@ class LauncherApp(AbstractTkApp):
         else:
             current_bot_version = self.update_bot_version_from_binary()
 
-        self.bot_version_label["text"] = f"Bot version : " \
-            f"{current_bot_version if current_bot_version else 'Not found'}" \
-            f" (Latest : " \
-            f"{current_server_bot_version if current_server_bot_version else 'Not found'})"
+        # self.bot_version_label["text"] = f"Bot version : " \
+        #     f"{current_bot_version if current_bot_version else 'Not found'}" \
+        #     f" (Latest : " \
+        #     f"{current_server_bot_version if current_server_bot_version else 'Not found'})"
+        pass
 
     def update_bot_version_from_package(self):
         return pkg_resources.get_distribution(OCTOBOT_NAME).version
@@ -170,9 +118,10 @@ class LauncherApp(AbstractTkApp):
     def update_launcher_version(self):
         current_server_launcher_version = launcher_controller.Launcher.get_current_server_version(
             GITHUB_LATEST_LAUNCHER_RELEASE_URL)
-        self.launcher_version_label["text"] = f"Launcher version : " \
-            f"{VERSION} (Latest : " \
-            f"{current_server_launcher_version if current_server_launcher_version else 'Not found'})"
+        # self.launcher_version_label["text"] = f"Launcher version : " \
+        #     f"{VERSION} (Latest : " \
+        #     f"{current_server_launcher_version if current_server_launcher_version else 'Not found'})"
+        pass
 
     @staticmethod
     def update_bot(app=None):
@@ -194,9 +143,6 @@ class LauncherApp(AbstractTkApp):
             sleep(1)
             app.update_bot_version()
 
-    def show_alert(self, text, strings=("OK",), title="Alert", bitmap=DIALOG_ICON, default=0):
-        return Dialog(self.window, text=text, title=title, bitmap=bitmap, default=default, strings=strings)
-
     @staticmethod
     def export_logs():
         # TODO
@@ -207,10 +153,7 @@ class LauncherApp(AbstractTkApp):
         os._exit(0)
 
     def start_app(self):
-        self.window.mainloop()
-
-    def hide(self):
-        self.window.withdraw()
+        self.start()
 
     def stop(self):
-        self.window.quit()
+        self.stop()

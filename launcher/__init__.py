@@ -15,6 +15,8 @@
 #  License along with this library.
 from enum import Enum
 
+import flask
+
 PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_BINARY = "OctoBot-Binary"
 OCTOBOT_NAME = "OctoBot"
@@ -56,8 +58,17 @@ CONFIG_INTERFACES_WEB = "web"
 OCTOBOT_BACKGROUND_IMAGE = "static/img/octobot.png"
 OCTOBOT_ICON = "static/favicon.ico"
 
+DEFAULT_SERVER_IP = '0.0.0.0'
+DEFAULT_SERVER_PORT = 5010  # prevent conflicts with OctoBot web interface
+
+server_instance = flask.Flask(__name__)
+
 
 class DeliveryPlatformsName(Enum):
     WINDOWS = "windows"
     LINUX = "linux"
     MAC = "osx"
+
+
+def load_routes():
+    from . import app_controller
