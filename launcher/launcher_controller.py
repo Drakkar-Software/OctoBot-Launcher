@@ -55,22 +55,10 @@ FILES_TO_DOWNLOAD = [
     (
         f"{GITHUB_RAW_CONTENT_URL}/{OCTOBOT_GITHUB_REPOSITORY}/{OCTOBOT_VERSION_RELEASE_PHASE}/{CONFIG_DEFAULT_TRADING_FILE}",
         CONFIG_DEFAULT_TRADING_FILE
-    )
-]
-IMAGES_TO_DOWNLOAD = [
+    ),
     (
         f"{GITHUB_RAW_CONTENT_URL}/{OCTOBOT_GITHUB_REPOSITORY}/{OCTOBOT_VERSION_RELEASE_PHASE}/{LOGGING_CONFIG_FILE}",
         LOGGING_CONFIG_FILE
-    ),
-    (
-        f"{GITHUB_RAW_CONTENT_URL}/{OCTOBOT_GITHUB_REPOSITORY}/{OCTOBOT_VERSION_RELEASE_PHASE}/{CONFIG_INTERFACES}/{CONFIG_INTERFACES_WEB}"
-        f"/{OCTOBOT_BACKGROUND_IMAGE}",
-        f"{CONFIG_INTERFACES}/{CONFIG_INTERFACES_WEB}/{OCTOBOT_BACKGROUND_IMAGE}"
-    ),
-    (
-        f"{GITHUB_RAW_CONTENT_URL}/{OCTOBOT_GITHUB_REPOSITORY}/{OCTOBOT_VERSION_RELEASE_PHASE}/{CONFIG_INTERFACES}/{CONFIG_INTERFACES_WEB}"
-        f"/{OCTOBOT_ICON}",
-        f"{CONFIG_INTERFACES}/{CONFIG_INTERFACES_WEB}/{OCTOBOT_ICON}"
     )
 ]
 
@@ -114,18 +102,7 @@ class Launcher:
 
     @staticmethod
     def ensure_minimum_environment():
-        need_to_create_environment = False
         try:
-            for file_to_dl in IMAGES_TO_DOWNLOAD:
-                Launcher._ensure_directory(file_to_dl[1])
-
-                file_name = file_to_dl[1]
-                if not os.path.isfile(file_name) and file_name:
-                    if not need_to_create_environment:
-                        print("Creating minimum launcher environment...")
-                    need_to_create_environment = True
-                    urllib.request.urlretrieve(file_to_dl[0], file_name)
-
             for folder in FOLDERS_TO_CREATE:
                 if not os.path.exists(folder) and folder:
                     os.makedirs(folder)

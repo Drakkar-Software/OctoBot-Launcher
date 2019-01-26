@@ -35,11 +35,10 @@ def main(args=sys.argv[1:]):
     parser.add_argument('-l', '--update_launcher', help='update OctoBot Launcher with the latest version available',
                         action='store_true')
     parser.add_argument('-s', '--start', help='Start OctoBot. OctoBot starting options can be added after '
-                                              '-s or --start. Examples: "-s ng t" will start OctoBot '
+                                              '-s or --start. Examples: "-s no t" will start OctoBot '
                                               'with "ng" option and "t" that will use telegram interface, without gui.',
                         nargs='*')
-    parser.add_argument('-ng', '--no_gui', help="Without gui",
-                        action='store_true')
+    parser.add_argument('-nw', '--no_web', help="Without web server", action='store_true')
 
     args = parser.parse_args(args)
 
@@ -50,7 +49,7 @@ def main(args=sys.argv[1:]):
     except ImportError:
         importlib.import_module("launcher.launcher_app")
 
-    if not args.no_gui:
+    if not args.no_web:
         start_launcher(args)
 
 

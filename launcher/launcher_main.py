@@ -18,7 +18,9 @@ import logging
 import os
 import sys
 
+import flask
 import requests
+import werkzeug
 
 from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
     LAUNCHER_PATH, VERSION, OCTOBOT_LAUNCHER_VERSION_BRANCH
@@ -26,7 +28,7 @@ from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
 # should have OCTOBOT_LAUNCHER_VERSION_BRANCH
 LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/{OCTOBOT_LAUNCHER_VERSION_BRANCH}/{LAUNCHER_PATH}"
 
-LAUNCHER_FILES = ["__init__.py", "launcher_app.py", "launcher_controller.py", "app_util.py"]
+LAUNCHER_FILES = ["__init__.py", "launcher_app.py", "launcher_controller.py", "app_util.py"]  # TODO
 
 sys.path.append(os.path.dirname(sys.executable))
 
@@ -66,5 +68,5 @@ def start_launcher(args):
         else:
             try:
                 LauncherApp()
-            except _tkinter.TclError:
+            except Exception:  # TODO
                 logging.error("Can't start gui, please try command line interface (use --help).")
