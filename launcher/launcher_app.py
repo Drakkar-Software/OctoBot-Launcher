@@ -38,6 +38,7 @@ class LauncherApp(WebApp):
         self.processing = False
 
         super().__init__()
+        self.start_app()
 
     def create_components(self):
         # bot update
