@@ -22,39 +22,22 @@ from time import sleep
 
 import pkg_resources
 
-from launcher import PROJECT_NAME, VERSION
+import launcher
 from launcher import launcher_controller, OCTOBOT_NAME
 from launcher.launcher_controller import Launcher, GITHUB_LATEST_BOT_RELEASE_URL, GITHUB_LATEST_LAUNCHER_RELEASE_URL
 from launcher.web_app import WebApp
 
 
 class LauncherApp(WebApp):
-    PROGRESS_MIN = 0
-    PROGRESS_MAX = 100
-
     def __init__(self):
         Launcher.ensure_minimum_environment()
 
         self.processing = False
 
+        launcher.launcher_instance = self
+
         super().__init__()
         self.start_app()
-
-    def create_components(self):
-        # bot update
-        pass
-
-    def inc_progress(self, inc_size, to_min=False, to_max=False):
-        # if to_max:
-        #     self.progress["value"] = self.PROGRESS_MAX
-        #     self.progress_label["text"] = f"{self.PROGRESS_MAX}%"
-        # elif to_min:
-        #     self.progress["value"] = self.PROGRESS_MIN
-        #     self.progress_label["text"] = f"{self.PROGRESS_MIN}%"
-        # else:
-        #     self.progress["value"] += inc_size
-        #     self.progress_label["text"] = f"{round(self.progress['value'], 1)}%"
-        pass
 
     def update_bot_handler(self):
         if not self.processing:
@@ -76,7 +59,6 @@ class LauncherApp(WebApp):
             )
 
             if launcher_process:
-                self.hide()
                 launcher_process.wait()
 
                 new_launcher_process = subprocess.Popen(
@@ -88,41 +70,28 @@ class LauncherApp(WebApp):
 
     def start_bot_handler(self, args=None):
         if not self.processing:
-            bot_process = Launcher.execute_command_on_detached_bot(commands=args)
+            launcher.bot_instance = Launcher.execute_command_on_detached_bot(commands=args)
 
-            if bot_process:
-                self.hide()
-                bot_process.wait()
+            if launcher.bot_instance:
+                launcher.bot_instance.wait()
                 self.stop()
 
-    def update_bot_version(self):
-        current_server_bot_version = launcher_controller.Launcher.get_current_server_version(
-            GITHUB_LATEST_BOT_RELEASE_URL)
+    def get_bot_server_version(self):
+        return launcher_controller.Launcher.get_current_server_version(GITHUB_LATEST_BOT_RELEASE_URL)
 
+    def get_launcher_server_version(self):
+        return launcher_controller.Launcher.get_current_server_version(GITHUB_LATEST_LAUNCHER_RELEASE_URL)
+
+    def get_bot_local_version(self):
         if Launcher.is_bot_package_installed():
-            current_bot_version = self.update_bot_version_from_package()
-        else:
-            current_bot_version = self.update_bot_version_from_binary()
+            return self.get_bot_version_from_package()
+        return self.get_bot_version_from_binary()
 
-        # self.bot_version_label["text"] = f"Bot version : " \
-        #     f"{current_bot_version if current_bot_version else 'Not found'}" \
-        #     f" (Latest : " \
-        #     f"{current_server_bot_version if current_server_bot_version else 'Not found'})"
-        pass
-
-    def update_bot_version_from_package(self):
+    def get_bot_version_from_package(self):
         return pkg_resources.get_distribution(OCTOBOT_NAME).version
 
-    def update_bot_version_from_binary(self):
+    def get_bot_version_from_binary(self):
         return launcher_controller.Launcher.get_current_bot_version()
-
-    def update_launcher_version(self):
-        current_server_launcher_version = launcher_controller.Launcher.get_current_server_version(
-            GITHUB_LATEST_LAUNCHER_RELEASE_URL)
-        # self.launcher_version_label["text"] = f"Launcher version : " \
-        #     f"{VERSION} (Latest : " \
-        #     f"{current_server_launcher_version if current_server_launcher_version else 'Not found'})"
-        pass
 
     @staticmethod
     def update_bot(app=None):
@@ -131,8 +100,6 @@ class LauncherApp(WebApp):
         launcher_controller.Launcher(app)
         if app:
             app.processing = False
-            sleep(1)
-            app.update_bot_version()
 
     @staticmethod
     def update_package(app=None):
@@ -141,8 +108,6 @@ class LauncherApp(WebApp):
         launcher_controller.Launcher(app, force_package=True)
         if app:
             app.processing = False
-            sleep(1)
-            app.update_bot_version()
 
     @staticmethod
     def export_logs():

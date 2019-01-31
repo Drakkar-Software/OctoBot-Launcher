@@ -13,14 +13,11 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
-import _tkinter
 import logging
 import os
 import sys
 
-import flask
 import requests
-import werkzeug
 
 from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
     LAUNCHER_PATH, VERSION, OCTOBOT_LAUNCHER_VERSION_BRANCH
@@ -28,7 +25,7 @@ from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
 # should have OCTOBOT_LAUNCHER_VERSION_BRANCH
 LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/{OCTOBOT_LAUNCHER_VERSION_BRANCH}/{LAUNCHER_PATH}"
 
-LAUNCHER_FILES = ["__init__.py", "launcher_app.py", "launcher_controller.py", "app_util.py"]  # TODO
+LAUNCHER_FILES = ["__init__.py", "launcher_app.py", "launcher_controller.py"]  # TODO : download all launcher folder
 
 sys.path.append(os.path.dirname(sys.executable))
 

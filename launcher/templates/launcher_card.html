@@ -1,0 +1,22 @@
+<div class="card-header">
+    <h4>
+    OctoBot-Launcher
+    </h4>
+</div>
+
+<!--Card content-->
+<div class="card-body">
+    <p class="card-text col-md">
+        Current version :
+        {% if is_up_to_date %}
+        <span class="badge badge-success">
+        {% else %}
+        <span class="badge badge-warning">
+        {% endif %}
+            {{ launcher_local_version }}</span>
+    </p>
+    <p class="card-text col-md">
+        Latest version : <span class="badge badge-primary">{{ launcher_server_version }}</span>
+    </p>
+    <button route="{{ url_for('update') }}" type="button" class="btn btn-primary waves-effect">Update Octobot-Launcher</button>
+</div>
