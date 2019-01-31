@@ -2,60 +2,13 @@
 {% block body %}
 <br/>
 <div class="row justify-content-around">
-    <div class="card col-12">
-        <div class="card-header">
-            <h4>
-            OctoBot
-            </h4>
-        </div>
-
-        <!--Card content-->
-        <div class="card-body">
-            <div class="row">
-                <p class="card-text col-md">
-                    Current version :
-                </p>
-                <p class="card-text col-md">
-                    Latest version :
-                </p>
-            </div>
-            <button route="{{ url_for('install') }}" type="button" class="btn btn-success waves-effect">Install or Update Octobot</button>
-        </div>
+    <div class="card col-12" template="{{ url_for('bot') }}">
     </div>
-    <div class="card col-12">
-        <div class="card-header">
-            <h4>
-            OctoBot-Launcher
-            </h4>
-        </div>
-
-        <!--Card content-->
-        <div class="card-body">
-            <div class="row">
-                <p class="card-text col-md">
-                    Current version :
-                </p>
-                <p class="card-text col-md">
-                    Latest version :
-                </p>
-            </div>
-            <button route="{{ url_for('update') }}" type="button" class="btn btn-primary waves-effect">Update Octobot-Launcher</button>
-        </div>
+    <div class="card col-12" template="{{ url_for('launcher') }}">
     </div>
 </div>
 <br/>
-<div class="card">
-    <div class="card-header">
-        <h4>
-        OctoBot news feed
-        </h4>
-    </div>
-
-    <!--Card content-->
-    <div class="card-body">
-        This service is temporary disabled.
-    </div>
+<div class="card" template="{{ url_for('news') }}">
 </div>
-<!--<button route="{{ url_for('stop') }}" type="button" class="btn btn-danger waves-effect">Stop Octobot</button>-->
 <br/>
 {% endblock %}

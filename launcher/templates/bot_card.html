@@ -1,0 +1,34 @@
+<div class="card-header">
+    <h4>
+    OctoBot
+    </h4>
+</div>
+
+<!--Card content-->
+<div class="card-body">
+    <p class="card-text col-md">
+        Current version :
+        {% if bot_local_version == None %}
+        <span class="badge badge-danger">NOT FOUND</span>
+        {% elif is_up_to_date %}
+        <span class="badge badge-success">{{ bot_local_version }}</span>
+        {% else %}
+        <span class="badge badge-warning">{{ bot_local_version }}</span>
+        {% endif %}
+    </p>
+    <p class="card-text col-md">
+        Latest version : <span class="badge badge-primary">{{ bot_server_version }}</span>
+    </p>
+    <p class="card-text col-md">
+        Bot status :
+        {% if bot_status == None %}
+        <span class="badge badge-warning">stopped</span>
+        {% else %}
+        <span class="badge badge-success">running</span>
+        {% endif %}
+    </p>
+    <div class="row">
+        <button route="{{ url_for('install') }}" type="button" class="btn btn-success waves-effect">Install or Update Octobot</button>
+        <button route="{{ url_for('stop') }}" type="button" class="btn btn-danger waves-effect">Stop Octobot</button>
+    </div>
+</div>

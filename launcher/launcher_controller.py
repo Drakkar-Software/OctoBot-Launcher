@@ -20,7 +20,6 @@ import logging
 import os
 import subprocess
 import sys
-import urllib.request
 from distutils.version import LooseVersion
 from subprocess import PIPE
 from tkinter.messagebox import WARNING
@@ -29,9 +28,9 @@ import pkg_resources
 import requests
 
 from launcher import CONFIG_FILE, OCTOBOT_NAME, GITHUB_API_CONTENT_URL, OCTOBOT_GITHUB_REPOSITORY, \
-    GITHUB_RAW_CONTENT_URL, OCTOBOT_VERSION_RELEASE_PHASE, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, DeliveryPlatformsName, \
-    TENTACLES_PATH, CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, CONFIG_INTERFACES, \
-    CONFIG_INTERFACES_WEB, OCTOBOT_BACKGROUND_IMAGE, OCTOBOT_ICON, LAUNCHER_GITHUB_REPOSITORY, \
+    GITHUB_RAW_CONTENT_URL, OCTOBOT_VERSION_RELEASE_PHASE, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, \
+    DeliveryPlatformsName, \
+    TENTACLES_PATH, CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, LAUNCHER_GITHUB_REPOSITORY, \
     OCTOBOT_BINARY_GITHUB_REPOSITORY
 
 FOLDERS_TO_CREATE = ["logs", "backtesting/collector/data"]
@@ -126,17 +125,17 @@ class Launcher:
                     new_file_from_dl.write(file_content.encode())
 
     def create_environment(self):
-        if self.launcher_app:
-            self.launcher_app.inc_progress(0, to_min=True)
+        # if self.launcher_app:
+        #     self.launcher_app.inc_progress(0, to_min=True)
 
         logging.info(f"{OCTOBOT_NAME} is checking your environment...")
 
         self.ensure_file_environment(INSTALL_DOWNLOAD)
 
-        if self.launcher_app:
-            self.launcher_app.window.update()
-            self.launcher_app.inc_progress(LIB_FILES_DOWNLOAD_PROGRESS_SIZE)
-            self.launcher_app.inc_progress(CREATE_FOLDERS_PROGRESS_SIZE)
+        # if self.launcher_app:
+        #     self.launcher_app.window.update()
+        #     self.launcher_app.inc_progress(LIB_FILES_DOWNLOAD_PROGRESS_SIZE)
+        #     self.launcher_app.inc_progress(CREATE_FOLDERS_PROGRESS_SIZE)
 
         logging.info(f"Your {OCTOBOT_NAME} environment is ready !")
 
@@ -224,7 +223,7 @@ class Launcher:
         try:
             return latest_release_data["tag_name"]
         except KeyError:
-            return "Not found"
+            return None
 
     @staticmethod
     def get_latest_release_data(release_url):
