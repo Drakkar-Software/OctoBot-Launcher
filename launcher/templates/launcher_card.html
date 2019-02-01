@@ -6,17 +6,28 @@
 
 <!--Card content-->
 <div class="card-body">
-    <p class="card-text col-md">
-        Current version :
-        {% if is_up_to_date %}
-        <span class="badge badge-success">
-        {% else %}
-        <span class="badge badge-warning">
-        {% endif %}
-            {{ launcher_local_version }}</span>
-    </p>
-    <p class="card-text col-md">
-        Latest version : <span class="badge badge-primary">{{ launcher_server_version }}</span>
-    </p>
-    <button route="{{ url_for('update') }}" type="button" class="btn btn-primary waves-effect">Update Octobot-Launcher</button>
+    <div class="row col-12 mb-5">
+        <div class="col-6">
+            <p class="card-text col-md">
+                Current version :
+                {% if is_up_to_date %}
+                <span class="badge badge-success">
+                {% else %}
+                <span class="badge badge-warning">
+                {% endif %}
+                    {{ launcher_local_version }}</span>
+            </p>
+            <p class="card-text col-md">
+                Latest version : <span class="badge badge-primary">{{ launcher_server_version }}</span>
+            </p>
+        </div>
+        <div class="col-6">
+            <button route="{{ url_for('update') }}" type="button" class="btn btn-primary waves-effect {% if is_up_to_date %}disabled{% endif %}">Update Octobot-Launcher</button>
+        </div>
+    </div>
+    <div class="row col-12">
+        <div class="col-12">
+            <button route="{{ url_for('restart') }}" type="button" class="btn btn-warning waves-effect">Restart Octobot-Launcher</button>
+        </div>
+    </div>
 </div>

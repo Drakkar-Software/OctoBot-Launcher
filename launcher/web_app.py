@@ -16,6 +16,8 @@
 import logging
 import threading
 
+from werkzeug.serving import make_server
+
 from launcher import DEFAULT_SERVER_IP, DEFAULT_SERVER_PORT, load_routes, server_instance
 
 
@@ -23,27 +25,24 @@ class WebApp(threading.Thread):
     def __init__(self, web_ip=DEFAULT_SERVER_IP, web_port=DEFAULT_SERVER_PORT):
         super().__init__()
         self.logger = logging.getLogger(self.__class__.__name__)
-        self.app = None
 
         self.server_ip = web_ip
         self.server_port = web_port
 
-    def run(self):
-        # Define the WSGI application object
-        self.app = server_instance
+        self.srv = make_server(host=self.server_ip,
+                               port=self.server_port,
+                               threaded=True,
+                               app=server_instance)
+        self.ctx = server_instance.app_context()
+        self.ctx.push()
 
+    def run(self):
         # load routes
         load_routes()
+        self.srv.serve_forever()
 
-        self.app.run(host=self.server_ip,
-                     port=self.server_port,
-                     debug=False,
-                     threaded=True,
-                     use_reloader=False)
+    def prepare_stop(self):
+        self.srv.server_close()
 
     def stop(self):
-        # func = request.environ.get('werkzeug.server.shutdown')
-        # if func is None:
-        #     raise RuntimeError('Not running with the Werkzeug Server')
-        # func()
-        pass
+        self.srv.shutdown()
