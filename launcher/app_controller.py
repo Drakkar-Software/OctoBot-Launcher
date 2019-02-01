@@ -62,3 +62,14 @@ def install():
 @server_instance.route("/stop")
 def stop():
     return jsonify()
+
+
+@server_instance.route("/start")
+def start():
+    return jsonify()
+
+
+@server_instance.route("/restart")
+def restart():
+    launcher_instance.restart_launcher()
+    return jsonify('ok')

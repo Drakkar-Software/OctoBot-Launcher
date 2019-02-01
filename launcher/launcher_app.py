@@ -49,24 +49,31 @@ class LauncherApp(WebApp):
             thread = Thread(target=self.update_package, args=(self,))
             thread.start()
 
+    @staticmethod
+    def launcher_start_args():
+        # prevent binary to add self as first argument
+        return sys.argv[0] if sys.argv[0].endswith(".py") else ""
+
     def update_launcher_handler(self):
         if not self.processing:
-            # prevent binary to add self as first argument
-            first_arg = sys.argv[0] if sys.argv[0].endswith(".py") else ""
-
             launcher_process = subprocess.Popen(
-                [sys.executable, first_arg, "--update_launcher"] if first_arg else [sys.executable, "--update_launcher"]
+                [sys.executable, self.launcher_start_args(), "--update_launcher"]
+                if self.launcher_start_args() else [sys.executable, "--update_launcher"]
             )
 
             if launcher_process:
                 launcher_process.wait()
 
-                new_launcher_process = subprocess.Popen(
-                    [sys.executable, first_arg] if first_arg else [sys.executable]
-                )
+                self.restart_launcher()
 
-                if new_launcher_process:
-                    self.stop()
+    def restart_launcher(self):
+        self.prepare_stop()
+        new_launcher_process = subprocess.Popen([sys.executable, self.launcher_start_args()]
+                                                if self.launcher_start_args() else [sys.executable])
+
+        if new_launcher_process:
+            new_launcher_process.wait()
+            self.stop()
 
     def start_bot_handler(self, args=None):
         if not self.processing:
@@ -74,7 +81,7 @@ class LauncherApp(WebApp):
 
             if launcher.bot_instance:
                 launcher.bot_instance.wait()
-                self.stop()
+                self.close()
 
     def get_bot_server_version(self):
         return launcher_controller.Launcher.get_current_server_version(GITHUB_LATEST_BOT_RELEASE_URL)
@@ -115,11 +122,8 @@ class LauncherApp(WebApp):
         pass
 
     @staticmethod
-    def close_callback():
+    def close():
         os._exit(0)
 
     def start_app(self):
         self.start()
-
-    def stop(self):
-        self.stop()

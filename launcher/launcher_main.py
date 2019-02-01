@@ -65,5 +65,5 @@ def start_launcher(args):
         else:
             try:
                 LauncherApp()
-            except Exception:  # TODO
-                logging.error("Can't start gui, please try command line interface (use --help).")
+            except Exception as e:
+                logging.error(f"Can't start gui, please try command line interface (use --help).\n{e}")
