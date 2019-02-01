@@ -15,6 +15,7 @@
 #  License along with this library.
 import logging
 import threading
+import socket
 
 from werkzeug.serving import make_server
 
@@ -35,6 +36,11 @@ class WebApp(threading.Thread):
                                app=server_instance)
         self.ctx = server_instance.app_context()
         self.ctx.push()
+
+        self.logger.info(f"Interface successfully initialized and accessible at: http://{self._get_web_server_url()}")
+
+    def _get_web_server_url(self):
+        return f"{socket.gethostbyname(socket.gethostname())}:{self.server_port}"
 
     def run(self):
         # load routes

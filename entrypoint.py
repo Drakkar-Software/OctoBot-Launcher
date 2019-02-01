@@ -45,9 +45,9 @@ def main(args=sys.argv[1:]):
     update_launcher()
 
     try:
-        import launcher.launcher_app
+        import launcher.app.launcher_app
     except ImportError:
-        importlib.import_module("launcher.launcher_app")
+        importlib.import_module("launcher.app.launcher_app")
 
     if not args.no_web:
         start_launcher(args)
