@@ -1,14 +1,35 @@
 {% extends "layout.html" %}
 {% block body %}
 <br/>
-<div class="row justify-content-around">
-    <div class="card col-12" template="{{ url_for('bot') }}">
+<div class="row">
+    <div class="card col-lg mx-3">
+        <div class="card-header">
+            <h4>
+                OctoBot
+                <span class="fa fa-xs fa-sync float-right" onclick="load_template('{{ url_for('bot') }}')"></span>
+            </h4>
+        </div>
+        <div class="card-body grid" template="{{ url_for('bot') }}"></div>
     </div>
-    <div class="card col-12" template="{{ url_for('launcher') }}">
+    <div class="card col-lg mx-3">
+        <div class="card-header">
+            <h4>
+                OctoBot-Launcher
+                <span class="fa fa-xs fa-sync float-right" onclick="load_template('{{ url_for('launcher') }}')"></span>
+            </h4>
+        </div>
+        <div class="card-body grid" template="{{ url_for('launcher') }}"></div>
     </div>
 </div>
 <br/>
-<div class="card" template="{{ url_for('news') }}">
+<div class="card mx-3">
+    <div class="card-header">
+    <h4>
+        OctoBot news feed
+        <span class="fa fa-xs fa-sync float-right" onclick="load_template('{{ url_for('news') }}')"></span>
+    </h4>
+    <div class="card-body grid" template="{{ url_for('news') }}"></div>
+</div>
 </div>
 <br/>
 {% endblock %}

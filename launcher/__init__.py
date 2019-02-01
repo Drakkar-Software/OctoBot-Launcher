@@ -65,6 +65,10 @@ server_instance = flask.Flask(__name__)
 launcher_instance = None
 bot_instance = None
 
+WINDOWS_OS_NAME = "nt"
+MAC_OS_NAME = "mac"
+LINUX_OS_NAME = "posix"
+
 
 class DeliveryPlatformsName(Enum):
     WINDOWS = "windows"
@@ -72,5 +76,10 @@ class DeliveryPlatformsName(Enum):
     MAC = "osx"
 
 
+def get_laucher_instance():
+    global launcher_instance
+    return launcher_instance
+
+
 def load_routes():
-    from . import app_controller
+    from launcher.app import app_controller

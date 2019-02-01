@@ -18,19 +18,17 @@ import os
 import subprocess
 import sys
 from threading import Thread
-from time import sleep
-
-import pkg_resources
 
 import launcher
-from launcher import launcher_controller, OCTOBOT_NAME
-from launcher.launcher_controller import Launcher, GITHUB_LATEST_BOT_RELEASE_URL, GITHUB_LATEST_LAUNCHER_RELEASE_URL
-from launcher.web_app import WebApp
+from launcher.tools import environment
+from launcher.app.web_app import WebApp
+from launcher.tools.environment import ensure_minimum_environment
+from launcher.tools.version import OctoBotVersion
 
 
 class LauncherApp(WebApp):
     def __init__(self):
-        Launcher.ensure_minimum_environment()
+        ensure_minimum_environment()
 
         self.processing = False
 
@@ -77,34 +75,18 @@ class LauncherApp(WebApp):
 
     def start_bot_handler(self, args=None):
         if not self.processing:
-            launcher.bot_instance = Launcher.execute_command_on_detached_bot(commands=args)
+            launcher.bot_instance = LauncherController.execute_command_on_detached_binary(OctoBotVersion().get_local_binary(),
+                                                                                          commands=args)
 
             if launcher.bot_instance:
                 launcher.bot_instance.wait()
                 self.close()
 
-    def get_bot_server_version(self):
-        return launcher_controller.Launcher.get_current_server_version(GITHUB_LATEST_BOT_RELEASE_URL)
-
-    def get_launcher_server_version(self):
-        return launcher_controller.Launcher.get_current_server_version(GITHUB_LATEST_LAUNCHER_RELEASE_URL)
-
-    def get_bot_local_version(self):
-        if Launcher.is_bot_package_installed():
-            return self.get_bot_version_from_package()
-        return self.get_bot_version_from_binary()
-
-    def get_bot_version_from_package(self):
-        return pkg_resources.get_distribution(OCTOBOT_NAME).version
-
-    def get_bot_version_from_binary(self):
-        return launcher_controller.Launcher.get_current_bot_version()
-
     @staticmethod
     def update_bot(app=None):
         if app:
             app.processing = True
-        launcher_controller.Launcher(app)
+        environment.install_bot()
         if app:
             app.processing = False
 
@@ -112,7 +94,7 @@ class LauncherApp(WebApp):
     def update_package(app=None):
         if app:
             app.processing = True
-        launcher_controller.Launcher(app, force_package=True)
+        environment.install_bot(force_package=True)
         if app:
             app.processing = False
 

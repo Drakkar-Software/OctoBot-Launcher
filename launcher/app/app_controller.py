@@ -1,11 +1,14 @@
 from distutils.version import LooseVersion
 
 from flask import jsonify, render_template
+
+from launcher.tools.github import GithubOctoBot, GithubLauncher
 from launcher.launcher_main import update_launcher
 
 import launcher as launcher_module
 from launcher import server_instance, VERSION, launcher_instance
-from launcher.launcher_app import LauncherApp
+from launcher.app.launcher_app import LauncherApp
+from launcher.tools.version import OctoBotVersion
 
 
 @server_instance.route("/")
@@ -16,28 +19,28 @@ def home():
 
 @server_instance.route("/launcher")
 def launcher():
-    server_version = launcher_instance.get_launcher_server_version()
+    server_version = GithubLauncher().get_current_server_version()
     if not server_version:
         server_version = "0"
 
     return render_template('launcher_card.html',
                            launcher_local_version=VERSION,
-                           launcher_server_version=launcher_instance.get_launcher_server_version(),
+                           launcher_server_version=server_version,
                            is_up_to_date=LooseVersion(VERSION) >= LooseVersion(server_version))
 
 
 @server_instance.route("/bot")
 def bot():
-    local_version = launcher_instance.get_bot_local_version()
+    local_version = OctoBotVersion().get_current_version()
     if not local_version:
         local_version = "0"
 
-    server_version = launcher_instance.get_bot_server_version()
+    server_version = GithubOctoBot().get_current_server_version()
     if not server_version:
         server_version = "0"
     return render_template('bot_card.html',
-                           bot_local_version=launcher_instance.get_bot_local_version(),
-                           bot_server_version=launcher_instance.get_bot_server_version(),
+                           bot_local_version=local_version,
+                           bot_server_version=server_version,
                            bot_status=launcher_module.bot_instance,
                            is_up_to_date=LooseVersion(local_version) >= LooseVersion(server_version))
 

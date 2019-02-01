@@ -25,7 +25,7 @@ from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
 # should have OCTOBOT_LAUNCHER_VERSION_BRANCH
 LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/{OCTOBOT_LAUNCHER_VERSION_BRANCH}/{LAUNCHER_PATH}"
 
-LAUNCHER_FILES = ["__init__.py", "launcher_app.py", "launcher_controller.py"]  # TODO : download all launcher folder
+LAUNCHER_FILES = ["__init__.py", "executor.py"]  # TODO : download all launcher folder
 
 sys.path.append(os.path.dirname(sys.executable))
 
@@ -53,7 +53,7 @@ def start_launcher(args):
     if args.version:
         print(VERSION)
     else:
-        from launcher.launcher_app import LauncherApp
+        from launcher.app.launcher_app import LauncherApp
         if args.update_launcher:
             update_launcher(force=True)
         elif args.update:
