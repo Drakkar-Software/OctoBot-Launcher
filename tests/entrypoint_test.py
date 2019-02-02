@@ -1,4 +1,4 @@
-from entrypoint import main
+from launcher.launcher_entry import main
 
 
 def test_main():
