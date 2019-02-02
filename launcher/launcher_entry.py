@@ -13,40 +13,35 @@
 #
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
+
+import argparse
 import logging
-import os
 import sys
+import webbrowser
 
-import requests
-
-from launcher import GITHUB_RAW_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
-    LAUNCHER_PATH, VERSION, OCTOBOT_LAUNCHER_VERSION_BRANCH
-
-# should have OCTOBOT_LAUNCHER_VERSION_BRANCH
-LAUNCHER_URL = f"{GITHUB_RAW_CONTENT_URL}/{LAUNCHER_GITHUB_REPOSITORY}/{OCTOBOT_LAUNCHER_VERSION_BRANCH}/{LAUNCHER_PATH}"
-
-LAUNCHER_FILES = ["__init__.py", "executor.py"]  # TODO : download all launcher folder
-
-sys.path.append(os.path.dirname(sys.executable))
+from launcher import VERSION
 
 
-def update_launcher(force=False):
-    for file in LAUNCHER_FILES:
-        create_launcher_files(f"{LAUNCHER_URL}/{file}", f"{LAUNCHER_PATH}/{file}", force=force)
-    logging.info("Launcher updated")
+def launcher(args=sys.argv[1:]):
+    logging.basicConfig(level=logging.INFO)
 
+    parser = argparse.ArgumentParser(description='OctoBot - Launcher')
+    parser.add_argument('-e', '--export_logs', help="export Octobot's last logs",
+                        action='store_true')
+    parser.add_argument('-v', '--version', help='show OctoBot Launcher current version',
+                        action='store_true')
+    parser.add_argument('-u', '--update', help='update OctoBot with the latest version available',
+                        action='store_true')
+    parser.add_argument('-s', '--start', help='Start OctoBot. OctoBot starting options can be added after '
+                                              '-s or --start. Examples: "-s no t" will start OctoBot '
+                                              'with "ng" option and "t" that will use telegram interface, without gui.',
+                        nargs='*')
+    parser.add_argument('-nw', '--no_web', help="Without web server", action='store_true')
 
-def create_launcher_files(file_to_dl, result_file_path, force=False):
-    file_content = requests.get(file_to_dl).text
-    directory = os.path.dirname(result_file_path)
+    args = parser.parse_args(args)
 
-    if not os.path.exists(directory) and directory:
-        os.makedirs(directory)
-
-    file_name = result_file_path
-    if (not os.path.isfile(file_name) and file_name) or force:
-        with open(file_name, "w") as new_file_from_dl:
-            new_file_from_dl.write(file_content)
+    if not args.no_web:
+        start_launcher(args)
 
 
 def start_launcher(args):
@@ -54,9 +49,7 @@ def start_launcher(args):
         print(VERSION)
     else:
         from launcher.app.launcher_app import LauncherApp
-        if args.update_launcher:
-            update_launcher(force=True)
-        elif args.update:
+        if args.update:
             LauncherApp.update_bot()
         elif args.start:
             LauncherApp().start_bot_handler([f"-{arg}" for arg in args.start] if args.start else None)
@@ -64,6 +57,7 @@ def start_launcher(args):
             LauncherApp.export_logs()
         else:
             try:
-                LauncherApp()
+                app = LauncherApp()
+                webbrowser.open(app.get_web_server_url())
             except Exception as e:
                 logging.error(f"Can't start gui, please try command line interface (use --help).\n{e}")

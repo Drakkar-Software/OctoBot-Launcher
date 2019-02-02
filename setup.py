@@ -18,6 +18,13 @@ from setuptools import setup
 
 from launcher import PROJECT_NAME, VERSION
 
+# long description from README file
+with open('README.md', encoding='utf-8') as f:
+    DESCRIPTION = f.read()
+
+REQUIRED = open('requirements.txt').read()
+REQUIRES_PYTHON = '>=3.7.2'
+
 setup(
     name=PROJECT_NAME,
     version=VERSION,
@@ -25,15 +32,15 @@ setup(
     license='LGPL-3.0',
     author='Drakkar-Software',
     author_email='drakkar.software@protonmail.com',
-    description='Cryptocurrencies alert / trading bot',
+    description='OctoBot project launcher',
     py_modules=['entrypoint'],
-    packages=['launcher'],
-    long_description='Cryptocurrencies alert / trading bot',
-    install_requires=['requests'],
+    packages=['entrypoint'],
+    long_description=DESCRIPTION,
+    install_requires=REQUIRED,
     tests_require=['pytest'],
     test_suite="tests",
     zip_safe=False,
-    python_requires='>=3.7.2',
+    python_requires=REQUIRES_PYTHON,
     entry_points={
         'console_scripts': [
             PROJECT_NAME + ' = entrypoint:main'

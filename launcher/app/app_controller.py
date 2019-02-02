@@ -3,7 +3,6 @@ from distutils.version import LooseVersion
 from flask import jsonify, render_template
 
 from launcher.tools.github import GithubOctoBot, GithubLauncher
-from launcher.launcher_main import update_launcher
 
 import launcher as launcher_module
 from launcher import server_instance, VERSION, launcher_instance
@@ -52,7 +51,7 @@ def news():
 
 @server_instance.route("/update")
 def update():
-    update_launcher(force=True)
+    # TODO
     return jsonify('ok')
 
 
