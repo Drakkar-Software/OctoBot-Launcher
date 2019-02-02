@@ -14,41 +14,82 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import importlib
+import json
 import logging
 import os
+import shutil
 import sys
+import tarfile
+from urllib.request import urlretrieve
 
 import requests
+from past.translation import splitall
 
 LAUNCHER_PATH = "launcher"
-LAUNCHER_URL = f"https://raw.githubusercontent.com/Drakkar-Software/OctoBot-Launcher/master/{LAUNCHER_PATH}"
-
+RELEASE_PATH = "updates"
+LAUNCHER_SOURCE_EXT = "tar.gz"
 sys.path.append(os.path.dirname(sys.executable))
 
 
-def update_launcher(force=False):
-    for file in []:
-        create_launcher_files(f"{LAUNCHER_URL}/{file}", f"{LAUNCHER_PATH}/{file}", force=force)
+def get_latest_release_url():
+    return "https://api.github.com/repos/Drakkar-Software/OctoBot-Launcher/releases/latest"
+
+
+def get_latest_release_data():
+    return json.loads(requests.get(get_latest_release_url()).text)
+
+
+def get_latest_release_source_download_link():
+    return get_latest_release_data()["tarball_url"]
+
+
+def get_latest_release_source_file():
+    return f"{LAUNCHER_PATH}.{LAUNCHER_SOURCE_EXT}"
+
+
+def download_latest_release_sources():
+    urlretrieve(get_latest_release_source_download_link(), get_latest_release_source_file())
+
+
+def get_extraction_location():
+    release_file = tarfile.open(get_latest_release_source_file(), mode='r')
+    return os.path.commonprefix(release_file.getnames())
+
+
+def extraction_filter(members):
+    for tarinfo in members:
+        file_path = splitall(tarinfo.name)
+        if len(file_path) > 1 and file_path[1] == LAUNCHER_PATH:
+            yield tarinfo
+
+
+def extract_sources():
+    with tarfile.open(get_latest_release_source_file()) as source_tar:
+        source_tar.extractall(members=extraction_filter(source_tar), path=RELEASE_PATH)
+
+
+def move_sources():
+    try:
+        shutil.rmtree(LAUNCHER_PATH)
+    except FileNotFoundError:
+        pass
+
+    shutil.move(os.path.join(RELEASE_PATH, get_extraction_location(), LAUNCHER_PATH), os.getcwd())
+
+
+def update_launcher():
+    download_latest_release_sources()
+    extract_sources()
+    move_sources()
     logging.info("Launcher updated")
-
-
-def create_launcher_files(file_to_dl, result_file_path, force=False):
-    file_content = requests.get(file_to_dl).text
-    directory = os.path.dirname(result_file_path)
-
-    if not os.path.exists(directory) and directory:
-        os.makedirs(directory)
-
-    file_name = result_file_path
-    if (not os.path.isfile(file_name) and file_name) or force:
-        with open(file_name, "w") as new_file_from_dl:
-            new_file_from_dl.write(file_content)
 
 
 def main():
     logging.getLogger().setLevel(logging.INFO)
 
-    update_launcher()
+    if not os.path.exists(LAUNCHER_PATH):
+        update_launcher()
+        logging.info("Launcher fresh install...")
 
     try:
         from launcher.launcher_entry import launcher

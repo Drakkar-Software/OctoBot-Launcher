@@ -2,11 +2,11 @@ from distutils.version import LooseVersion
 
 from flask import jsonify, render_template
 
-from launcher.tools.github import GithubOctoBot, GithubLauncher
-
 import launcher as launcher_module
+from entrypoint import update_launcher
 from launcher import server_instance, VERSION, launcher_instance
-from launcher.app.launcher_app import LauncherApp
+from launcher.tools.environment import update_tentacles
+from launcher.tools.github import GithubOctoBot, GithubLauncher
 from launcher.tools.version import OctoBotVersion
 
 
@@ -40,7 +40,7 @@ def bot():
     return render_template('bot_card.html',
                            bot_local_version=local_version,
                            bot_server_version=server_version,
-                           bot_status=launcher_module.bot_instance,
+                           bot_status=launcher_instance.is_bot_alive(),
                            is_up_to_date=LooseVersion(local_version) >= LooseVersion(server_version))
 
 
@@ -51,27 +51,40 @@ def news():
 
 @server_instance.route("/update")
 def update():
-    # TODO
+    update_launcher()
     return jsonify('ok')
 
 
 @server_instance.route("/install")
 def install():
-    LauncherApp.update_bot(launcher_module.bot_instance)
+    launcher_instance.update_bot(launcher_module.bot_instance)
+    return jsonify('ok')
+
+
+@server_instance.route("/tentacles")
+def tentacles():
+    update_tentacles(OctoBotVersion().get_local_binary())
     return jsonify('ok')
 
 
 @server_instance.route("/stop")
 def stop():
-    return jsonify()
+    launcher_instance.stop_bot()
+    return jsonify('ok')
 
 
 @server_instance.route("/start")
 def start():
-    return jsonify()
+    launcher_instance.start_bot_handler()
+    return jsonify('ok')
 
 
 @server_instance.route("/restart")
 def restart():
     launcher_instance.restart_launcher()
     return jsonify('ok')
+
+
+@server_instance.route("/progress")
+def progess():
+    return jsonify(launcher_module.processing)

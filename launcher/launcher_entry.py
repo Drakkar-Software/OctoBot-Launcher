@@ -20,6 +20,7 @@ import sys
 import webbrowser
 
 from launcher import VERSION
+from launcher.tools import environment
 
 
 def launcher(args=sys.argv[1:]):
@@ -40,8 +41,7 @@ def launcher(args=sys.argv[1:]):
 
     args = parser.parse_args(args)
 
-    if not args.no_web:
-        start_launcher(args)
+    start_launcher(args)
 
 
 def start_launcher(args):
@@ -49,15 +49,19 @@ def start_launcher(args):
         print(VERSION)
     else:
         from launcher.app.launcher_app import LauncherApp
-        if args.update:
-            LauncherApp.update_bot()
-        elif args.start:
-            LauncherApp().start_bot_handler([f"-{arg}" for arg in args.start] if args.start else None)
-        elif args.export_logs:
-            LauncherApp.export_logs()
-        else:
+
+        if not args.no_web:
             try:
                 app = LauncherApp()
                 webbrowser.open(app.get_web_server_url())
             except Exception as e:
                 logging.error(f"Can't start gui, please try command line interface (use --help).\n{e}")
+
+        if args.update:
+            environment.install_bot(force_package=False)
+        elif args.start:
+            LauncherApp().start_bot_handler([f"-{arg}" for arg in args.start] if args.start else None)
+        elif args.export_logs:
+            pass
+        else:
+            pass

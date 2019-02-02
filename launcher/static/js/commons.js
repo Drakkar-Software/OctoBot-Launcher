@@ -35,17 +35,38 @@ function handle_route_button(){
         if (button[0].hasAttribute('route')){
             const command = button.attr('route');
             const origin_val = button.text();
+            let refreshIntervalId;
             $.ajax({
                 url: command,
                 beforeSend: function() {
                     button.html("<i class='fa fa-circle-notch fa-spin'></i>");
+                    refreshIntervalId = setInterval(function () {
+                        get_progress($('.progress-bar', button.parents()));
+                    }, 10);
                 },
                 complete: function() {
+                   clearInterval(refreshIntervalId);
                    button.html(origin_val);
+                   load_template(button.closest("div[template]").attr("template"));
                 }
             });
          }
     });
+}
+
+function get_progress(element) {
+    // const progress = element.closest('.progress');
+    // console.log(progress);
+    // $.ajax({
+    //     url: "/progress",
+    //     error: function() {
+    //        console.log("An error occurred when updating progress.");
+    //     },
+    //     success: function(data) {
+    //         // console.log(data);
+    //     }
+    // });
+    element.closest('.progress-bar').css('width', 100 + '%').attr('aria-valuenow', 100);
 }
 
 function animate_sync(){

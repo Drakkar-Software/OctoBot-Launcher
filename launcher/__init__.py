@@ -64,6 +64,7 @@ DEFAULT_SERVER_PORT = 5010  # prevent conflicts with OctoBot web interface
 server_instance = flask.Flask(__name__)
 launcher_instance = None
 bot_instance = None
+processing = 0
 
 WINDOWS_OS_NAME = "nt"
 MAC_OS_NAME = "mac"
@@ -79,6 +80,16 @@ class DeliveryPlatformsName(Enum):
 def get_laucher_instance():
     global launcher_instance
     return launcher_instance
+
+
+def inc_progress(inc_size, to_min=False, to_max=False):
+    global processing
+    if to_max:
+        processing = 100
+    elif to_min:
+        processing = 0
+    else:
+        processing += inc_size
 
 
 def load_routes():

@@ -43,10 +43,15 @@ class WebApp(threading.Thread):
     def run(self):
         # load routes
         load_routes()
-        self.srv.serve_forever()
+
+        try:
+            self.srv.serve_forever()
+        except (OSError, ValueError) as e:
+            logging.error(f"Web server has stopped. ({e})")
 
     def prepare_stop(self):
-        self.srv.server_close()
+        # self.srv.server_close()
+        self.srv.socket.close()
 
     def stop(self):
         self.srv.shutdown()

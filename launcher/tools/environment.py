@@ -15,13 +15,15 @@
 #  License along with this library.
 import logging
 import os
+import subprocess
 
 import requests
 
 from launcher import CONFIG_FILE, OCTOBOT_GITHUB_REPOSITORY, \
     GITHUB_RAW_CONTENT_URL, OCTOBOT_VERSION_RELEASE_PHASE, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, \
     CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, OCTOBOT_NAME, LINUX_OS_NAME, MAC_OS_NAME, \
-    TENTACLES_PATH, launcher_instance
+    TENTACLES_PATH, launcher_instance, inc_progress
+from launcher.tools import executor
 from launcher.tools.github import GithubOctoBot
 from launcher.tools.version import OctoBotVersion
 
@@ -53,19 +55,19 @@ FILES_TO_DOWNLOAD = [
     )
 ]
 
+LIB_FILES_DOWNLOAD_PROGRESS_SIZE = 5
+CREATE_FOLDERS_PROGRESS_SIZE = 5
+
 
 def create_environment():
-    # if self.launcher_app:
-    #     self.launcher_app.inc_progress(0, to_min=True)
-
+    inc_progress(0, to_min=True)
     logging.info(f"{OCTOBOT_NAME} is checking your environment...")
 
+    inc_progress(1)
     ensure_file_environment(INSTALL_DOWNLOAD)
 
-    # if self.launcher_app:
-    #     self.launcher_app.window.update()
-    #     self.launcher_app.inc_progress(LIB_FILES_DOWNLOAD_PROGRESS_SIZE)
-    #     self.launcher_app.inc_progress(CREATE_FOLDERS_PROGRESS_SIZE)
+    inc_progress(LIB_FILES_DOWNLOAD_PROGRESS_SIZE - 1)
+    inc_progress(CREATE_FOLDERS_PROGRESS_SIZE)
 
     logging.info(f"Your {OCTOBOT_NAME} environment is ready !")
 
@@ -119,16 +121,20 @@ def ensure_file_environment(file_to_download):
 
 
 def update_tentacles(binary_path):
-    # update tentacles if installed
-    if os.path.exists(TENTACLES_PATH):
-        launcher_instance.execute_command_on_current_bot(binary_path, ["-p", "update", "all"])
-        logging.info(f"Tentacles : all default tentacles have been updated.")
+    if binary_path:
+        # update tentacles if installed
+        if os.path.exists(TENTACLES_PATH):
+            executor.execute_command_on_current_binary(binary_path, ["-p", "update", "all"])
+            logging.info(f"Tentacles : all default tentacles have been updated.")
+        else:
+            executor.execute_command_on_current_binary(binary_path, ["-p", "install", "all"])
+            logging.info(f"Tentacles : all default tentacles have been installed.")
 
 
 def binary_execution_rights(binary_path):
     if os.name in [LINUX_OS_NAME, MAC_OS_NAME]:
         try:
-            rights_process = os.subprocess.Popen(["chmod", "+x", binary_path])
+            rights_process = subprocess.Popen(["chmod", "+x", binary_path])
         except Exception as e:
             logging.error(f"Failed to give execution rights to {binary_path} : {e}")
             rights_process = None

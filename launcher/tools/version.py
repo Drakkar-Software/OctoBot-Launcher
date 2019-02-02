@@ -23,24 +23,24 @@ from subprocess import PIPE
 
 import pkg_resources
 
-from launcher import OCTOBOT_BINARY_GITHUB_REPOSITORY, LAUNCHER_GITHUB_REPOSITORY, LINUX_OS_NAME, \
-    WINDOWS_OS_NAME, MAC_OS_NAME
-from launcher.tools import executor
+from launcher import LINUX_OS_NAME, \
+    WINDOWS_OS_NAME, MAC_OS_NAME, PROJECT_NAME, OCTOBOT_NAME, launcher_instance, inc_progress
+from launcher.tools import executor, BINARY_DOWNLOAD_PROGRESS_SIZE
 
 
 class Version:
-    PROJECT_NAME = ""
+    PROJECT = ""
 
     def is_package_installed(self):
         try:
-            pkg_resources.get_distribution(self.PROJECT_NAME)
+            pkg_resources.get_distribution(self.PROJECT)
             return True
         except (pkg_resources.DistributionNotFound, pkg_resources.RequirementParseError):
             return False
 
     def download_package(self):
         try:
-            cmd = [sys.executable, "-m", "pip", "install", "-U", self.PROJECT_NAME]
+            cmd = [sys.executable, "-m", "pip", "install", "-U", self.PROJECT]
             return subprocess.Popen(cmd, stdout=PIPE).stdout.read().rstrip().decode()
         except PermissionError as e:
             logging.error(f"Failed to update package : {e}")
@@ -51,18 +51,18 @@ class Version:
         binary = None
 
         if self.is_package_installed():
-            binary = self.PROJECT_NAME
+            binary = self.PROJECT
         else:
             try:
                 # try to found in current folder binary
                 if os.name == LINUX_OS_NAME:
-                    binary = f"./{next(iter(glob.glob(f'{self.PROJECT_NAME}*')))}"
+                    binary = f"./{next(iter(glob.glob(f'{self.PROJECT}*')))}"
 
                 elif os.name == WINDOWS_OS_NAME:
-                    binary = next(iter(glob.glob(f'{self.PROJECT_NAME}*.exe')))
+                    binary = next(iter(glob.glob(f'{self.PROJECT}*.exe')))
 
                 elif os.name == MAC_OS_NAME:
-                    binary = f"./{next(iter(glob.glob(f'{self.PROJECT_NAME}*')))}"
+                    binary = f"./{next(iter(glob.glob(f'{self.PROJECT}*')))}"
             except StopIteration:
                 binary = None
 
@@ -83,18 +83,18 @@ class Version:
             check_new_version = False
 
         if check_new_version:
-            logging.info(f"Upgrading {self.PROJECT_NAME} : from {current_version} to {last_release_version}...")
+            logging.info(f"Upgrading {self.PROJECT} : from {current_version} to {last_release_version}...")
             return github_instance.download_binary(replace=True)
         else:
-            logging.info(f"Nothing to do : {self.PROJECT_NAME} is up to date")
-            # if self.launcher_app:
-            #     self.launcher_app.inc_progress(BINARY_DOWNLOAD_PROGRESS_SIZE)
+            logging.info(f"Nothing to do : {self.PROJECT} is up to date")
+            if launcher_instance:
+                inc_progress(BINARY_DOWNLOAD_PROGRESS_SIZE)
             return binary_path
 
 
 class OctoBotVersion(Version):
-    PROJECT_NAME = OCTOBOT_BINARY_GITHUB_REPOSITORY
+    PROJECT = OCTOBOT_NAME
 
 
 class LauncherVersion(Version):
-    PROJECT_NAME = LAUNCHER_GITHUB_REPOSITORY
+    PROJECT = PROJECT_NAME

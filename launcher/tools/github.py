@@ -20,14 +20,17 @@ import os
 import requests
 
 from launcher import GITHUB_API_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
-    OCTOBOT_BINARY_GITHUB_REPOSITORY, WINDOWS_OS_NAME, DeliveryPlatformsName, LINUX_OS_NAME
+    OCTOBOT_BINARY_GITHUB_REPOSITORY, WINDOWS_OS_NAME, DeliveryPlatformsName, LINUX_OS_NAME, OCTOBOT_NAME, PROJECT_NAME, \
+    launcher_instance, inc_progress
+from launcher.tools import BINARY_DOWNLOAD_PROGRESS_SIZE
 
 
 class Github:
-    PROJECT_NAME = ""
+    PROJECT_REPOSITORY = ""
+    PROJECT = ""
 
     def get_latest_release_url(self):
-        return f"{GITHUB_API_CONTENT_URL}/repos/{self.PROJECT_NAME}/releases/latest"
+        return f"{GITHUB_API_CONTENT_URL}/repos/{self.PROJECT_REPOSITORY}/releases/latest"
 
     def get_latest_release_data(self):
         return json.loads(requests.get(self.get_latest_release_url()).text)
@@ -51,7 +54,7 @@ class Github:
         # search for corresponding release
         for asset in latest_release_data["assets"]:
             asset_name, _ = os.path.splitext(asset["name"])
-            if f"{self.PROJECT_NAME}_{os_name.value}" in asset_name:
+            if f"{self.PROJECT}_{os_name.value}" in asset_name:
                 return asset
         return None
 
@@ -68,12 +71,12 @@ class Github:
 
         if binary:
             final_size = binary["size"]
-            # increment = (BINARY_DOWNLOAD_PROGRESS_SIZE / (final_size / 1024))
+            increment = (BINARY_DOWNLOAD_PROGRESS_SIZE / (final_size / 1024))
 
             r = requests.get(binary["browser_download_url"], stream=True)
 
             binary_name, binary_ext = os.path.splitext(binary["name"])
-            path = f"{self.PROJECT_NAME}{binary_ext}"
+            path = f"{self.PROJECT}{binary_ext}"
 
             if r.status_code == 200:
 
@@ -86,8 +89,8 @@ class Github:
                 with open(path, 'wb') as f:
                     for chunk in r.iter_content(1024):
                         f.write(chunk)
-                        # if self.launcher_app:
-                        #     self.launcher_app.inc_progress(increment)
+                        if launcher_instance:
+                            inc_progress(increment)
 
             return path
         else:
@@ -97,7 +100,7 @@ class Github:
     def update_binary(self, version_instance, force_package=False):
         # parse latest release
         try:
-            logging.info(f"{self.PROJECT_NAME} is checking for updates...")
+            logging.info(f"{self.PROJECT} is checking for updates...")
             latest_release_data = self.get_latest_release_data()
 
             # try to find binary / package
@@ -110,7 +113,7 @@ class Github:
                 # try to find in current folder binary
                 # if current octobot binary found
                 if binary_path:
-                    logging.info(f"{self.PROJECT_NAME} installation found, analyzing...")
+                    logging.info(f"{self.PROJECT} installation found, analyzing...")
                     return version_instance.get_local_version_or_download(self, binary_path, latest_release_data)
                 else:
                     return self.download_binary(latest_release_data)
@@ -119,8 +122,10 @@ class Github:
 
 
 class GithubOctoBot(Github):
-    PROJECT_NAME = OCTOBOT_BINARY_GITHUB_REPOSITORY
+    PROJECT_REPOSITORY = OCTOBOT_BINARY_GITHUB_REPOSITORY
+    PROJECT = OCTOBOT_NAME
 
 
 class GithubLauncher(Github):
-    PROJECT_NAME = LAUNCHER_GITHUB_REPOSITORY
+    PROJECT_REPOSITORY = LAUNCHER_GITHUB_REPOSITORY
+    PROJECT = PROJECT_NAME
