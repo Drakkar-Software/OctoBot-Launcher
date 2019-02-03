@@ -20,8 +20,11 @@
         </div>
     </div>
     <div class="row col-12">
-        <div class="col-12">
+        <div class="col-6">
             <button route="{{ url_for('restart') }}" type="button" class="btn btn-warning waves-effect">Restart Octobot-Launcher</button>
+        </div>
+        <div class="col-6">
+            <button route="{{ url_for('stop_launcher') }}" type="button" class="btn btn-danger waves-effect">Stop Octobot-Launcher</button>
         </div>
     </div>
      <div class="row col-12 mt-4">
