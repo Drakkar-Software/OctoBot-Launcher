@@ -70,6 +70,10 @@ class LauncherApp(WebApp):
             new_launcher_process.wait()
             self.stop()
 
+    def stop_launcher(self):
+        self.prepare_stop()
+        self.stop()
+
     @staticmethod
     def start_bot_handler(args=None):
         launcher.bot_instance = executor.execute_command_on_detached_binary(OctoBotVersion().get_local_binary(),

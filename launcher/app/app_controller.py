@@ -8,6 +8,7 @@ from launcher import server_instance, VERSION, launcher_instance
 from launcher.tools.environment import update_tentacles
 from launcher.tools.github import GithubOctoBot, GithubLauncher
 from launcher.tools.version import OctoBotVersion
+from launcher.app.app_model import is_up_to_date
 
 
 @server_instance.route("/")
@@ -25,7 +26,7 @@ def launcher():
     return render_template('launcher_card.html',
                            launcher_local_version=VERSION,
                            launcher_server_version=server_version,
-                           is_up_to_date=LooseVersion(VERSION) >= LooseVersion(server_version))
+                           is_up_to_date=is_up_to_date(VERSION, server_version))
 
 
 @server_instance.route("/bot")
@@ -41,7 +42,7 @@ def bot():
                            bot_local_version=local_version,
                            bot_server_version=server_version,
                            bot_status=launcher_instance.is_bot_alive(),
-                           is_up_to_date=LooseVersion(local_version) >= LooseVersion(server_version))
+                           is_up_to_date=is_up_to_date(local_version, server_version))
 
 
 @server_instance.route("/news")
@@ -82,6 +83,12 @@ def start():
 @server_instance.route("/restart")
 def restart():
     launcher_instance.restart_launcher()
+    return jsonify('ok')
+
+
+@server_instance.route("/stop_launcher")
+def stop_launcher():
+    launcher_instance.stop_launcher()
     return jsonify('ok')
 
 

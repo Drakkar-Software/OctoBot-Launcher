@@ -30,6 +30,7 @@ from launcher.tools import executor, BINARY_DOWNLOAD_PROGRESS_SIZE
 
 class Version:
     PROJECT = ""
+    NOT_INSTALLED_VERSION = "not installed"
 
     def is_package_installed(self):
         try:
@@ -68,9 +69,17 @@ class Version:
 
         return binary
 
+    @staticmethod
+    def is_binary_available(binary_path):
+        if binary_path is None or not os.path.isfile(binary_path):
+            return False
+        return True
+
     def get_current_version(self, binary_path=None):
         if not binary_path:
             binary_path = self.get_local_binary()
+        if not self.is_binary_available(binary_path):
+            return self.NOT_INSTALLED_VERSION
         return executor.execute_command_on_current_binary(binary_path, ["--version"])
 
     def get_local_version_or_download(self, github_instance, binary_path, latest_release_data=None):
