@@ -21,7 +21,7 @@ import requests
 
 from launcher import GITHUB_API_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
     OCTOBOT_BINARY_GITHUB_REPOSITORY, WINDOWS_OS_NAME, DeliveryPlatformsName, LINUX_OS_NAME, OCTOBOT_NAME, PROJECT_NAME, \
-    launcher_instance, inc_progress
+    inc_progress
 from launcher.tools import BINARY_DOWNLOAD_PROGRESS_SIZE
 
 
@@ -89,8 +89,7 @@ class Github:
                 with open(path, 'wb') as f:
                     for chunk in r.iter_content(1024):
                         f.write(chunk)
-                        if launcher_instance:
-                            inc_progress(increment)
+                        inc_progress(increment)
 
             return path
         else:

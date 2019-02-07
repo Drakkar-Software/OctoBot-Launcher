@@ -77,7 +77,7 @@ class DeliveryPlatformsName(Enum):
     MAC = "osx"
 
 
-def get_laucher_instance():
+def get_launcher_instance():
     global launcher_instance
     return launcher_instance
 
