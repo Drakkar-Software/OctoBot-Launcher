@@ -41,8 +41,8 @@ function handle_route_button(){
                 beforeSend: function() {
                     button.html("<i class='fa fa-circle-notch fa-spin'></i>");
                     refreshIntervalId = setInterval(function () {
-                        get_progress($('.progress-bar', button.parents()));
-                    }, 10);
+                        get_progress(button);
+                    }, 100);
                 },
                 complete: function() {
                    clearInterval(refreshIntervalId);
@@ -55,18 +55,24 @@ function handle_route_button(){
 }
 
 function get_progress(element) {
-    // const progress = element.closest('.progress');
-    // console.log(progress);
-    // $.ajax({
-    //     url: "/progress",
-    //     error: function() {
-    //        console.log("An error occurred when updating progress.");
-    //     },
-    //     success: function(data) {
-    //         // console.log(data);
-    //     }
-    // });
-    element.closest('.progress-bar').css('width', 100 + '%').attr('aria-valuenow', 100);
+    const body = element.closest(".card-body");
+    const progress = body.find(".progress");
+    const progress_bar = progress.find(".progress-bar");
+
+    // show progress if not
+    if (progress.is(':hidden')){
+        progress.show();
+    }
+
+    $.ajax({
+        url: "/progress",
+        error: function() {
+           console.log("An error occurred when updating progress.");
+        },
+        success: function(data) {
+            progress_bar.css("width", data + "%").attr("aria-valuenow", data);
+        }
+    });
 }
 
 function animate_sync(){

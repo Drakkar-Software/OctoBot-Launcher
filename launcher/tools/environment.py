@@ -22,7 +22,7 @@ import requests
 from launcher import CONFIG_FILE, OCTOBOT_GITHUB_REPOSITORY, \
     GITHUB_RAW_CONTENT_URL, OCTOBOT_VERSION_RELEASE_PHASE, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, \
     CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, OCTOBOT_NAME, LINUX_OS_NAME, MAC_OS_NAME, \
-    TENTACLES_PATH, launcher_instance, inc_progress
+    TENTACLES_PATH, inc_progress
 from launcher.tools import executor
 from launcher.tools.github import GithubOctoBot
 from launcher.tools.version import OctoBotVersion
