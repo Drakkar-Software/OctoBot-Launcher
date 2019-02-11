@@ -40,7 +40,11 @@ def get_latest_release_data():
 
 
 def get_latest_release_source_download_link():
-    return get_latest_release_data()["tarball_url"]
+    try:
+        return get_latest_release_data()["tarball_url"]
+    except KeyError as e:
+        logging.error(f"Can't find any release source : {e}")
+        return None
 
 
 def get_latest_release_source_file():
@@ -48,7 +52,9 @@ def get_latest_release_source_file():
 
 
 def download_latest_release_sources():
-    urlretrieve(get_latest_release_source_download_link(), get_latest_release_source_file())
+    release_source_download_link = get_latest_release_source_download_link()
+    if release_source_download_link:
+        urlretrieve(release_source_download_link, get_latest_release_source_file())
 
 
 def get_extraction_location():
@@ -64,8 +70,9 @@ def extraction_filter(members):
 
 
 def extract_sources():
-    with tarfile.open(get_latest_release_source_file()) as source_tar:
-        source_tar.extractall(members=extraction_filter(source_tar), path=RELEASE_PATH)
+    if os.path.isfile(get_latest_release_source_file()):
+        with tarfile.open(get_latest_release_source_file()) as source_tar:
+            source_tar.extractall(members=extraction_filter(source_tar), path=RELEASE_PATH)
 
 
 def move_sources():
@@ -74,7 +81,10 @@ def move_sources():
     except FileNotFoundError:
         pass
 
-    shutil.move(os.path.join(RELEASE_PATH, get_extraction_location(), LAUNCHER_PATH), os.getcwd())
+    try:
+        shutil.move(os.path.join(RELEASE_PATH, get_extraction_location(), LAUNCHER_PATH), os.getcwd())
+    except FileNotFoundError:
+        logging.warning("Can't move updated sources.")
 
 
 def update_launcher():
