@@ -14,37 +14,23 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 import importlib
-import json
 import logging
 import os
 import shutil
 import sys
-import tarfile
+import zipfile
 from urllib.request import urlretrieve
 
-import requests
 from past.translation import splitall
 
 LAUNCHER_PATH = "launcher"
 RELEASE_PATH = "updates"
-LAUNCHER_SOURCE_EXT = "tar.gz"
+LAUNCHER_SOURCE_EXT = "zip"
 sys.path.append(os.path.dirname(sys.executable))
 
 
-def get_latest_release_url():
-    return "https://api.github.com/repos/Drakkar-Software/OctoBot-Launcher/releases/latest"
-
-
-def get_latest_release_data():
-    return json.loads(requests.get(get_latest_release_url()).text)
-
-
-def get_latest_release_source_download_link():
-    try:
-        return get_latest_release_data()["tarball_url"]
-    except KeyError as e:
-        logging.error(f"Can't find any release source : {e}")
-        return None
+def get_latest_source_url():
+    return "https://github.com/Drakkar-Software/OctoBot-Launcher/archive/master.zip"
 
 
 def get_latest_release_source_file():
@@ -52,27 +38,25 @@ def get_latest_release_source_file():
 
 
 def download_latest_release_sources():
-    release_source_download_link = get_latest_release_source_download_link()
-    if release_source_download_link:
-        urlretrieve(release_source_download_link, get_latest_release_source_file())
+    urlretrieve(get_latest_source_url(), get_latest_release_source_file())
 
 
 def get_extraction_location():
-    release_file = tarfile.open(get_latest_release_source_file(), mode='r')
-    return os.path.commonprefix(release_file.getnames())
+    source_file = zipfile.ZipFile(get_latest_release_source_file(), 'r')
+    return os.path.commonprefix(source_file.namelist())
 
 
 def extraction_filter(members):
-    for tarinfo in members:
-        file_path = splitall(tarinfo.name)
+    for info in members:
+        file_path = splitall(info.filename)
         if len(file_path) > 1 and file_path[1] == LAUNCHER_PATH:
-            yield tarinfo
+            yield info
 
 
 def extract_sources():
     if os.path.isfile(get_latest_release_source_file()):
-        with tarfile.open(get_latest_release_source_file()) as source_tar:
-            source_tar.extractall(members=extraction_filter(source_tar), path=RELEASE_PATH)
+        with zipfile.ZipFile(get_latest_release_source_file()) as source_zip:
+            source_zip.extractall(members=extraction_filter(source_zip.infolist()), path=RELEASE_PATH)
 
 
 def move_sources():
