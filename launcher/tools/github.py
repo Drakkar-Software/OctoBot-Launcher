@@ -52,10 +52,13 @@ class Github:
             os_name = DeliveryPlatformsName.MAC
 
         # search for corresponding release
-        for asset in latest_release_data["assets"]:
-            asset_name, _ = os.path.splitext(asset["name"])
-            if f"{self.PROJECT}_{os_name.value}" in asset_name:
-                return asset
+        try:
+            for asset in latest_release_data["assets"]:
+                asset_name, _ = os.path.splitext(asset["name"])
+                if f"{self.PROJECT}_{os_name.value}" in asset_name:
+                    return asset
+        except KeyError as e:
+            logging.error(f"Can't find any asset : {e}")
         return None
 
     def get_current_server_version(self, latest_release_data=None):
