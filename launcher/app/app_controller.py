@@ -7,6 +7,7 @@ from launcher.tools.environment import update_tentacles
 from launcher.tools.github import GithubOctoBot, GithubLauncher
 from launcher.tools.version import OctoBotVersion
 from launcher.app.app_model import is_up_to_date
+from launcher.tools.octobot_connector import OctoBotConnector
 
 
 @server_instance.route("/")
@@ -29,7 +30,14 @@ def launcher():
 
 @server_instance.route("/bot")
 def bot():
-    local_version = OctoBotVersion().get_current_version()
+    bot_connector = OctoBotConnector()
+    is_bot_alive = launcher_instance.is_bot_alive() or bot_connector.is_alive()
+    if is_bot_alive:
+        local_version = bot_connector.get_current_version()
+        bot_url = bot_connector.get_web_interface_url()
+    else:
+        local_version = OctoBotVersion().get_current_version()
+        bot_url = None
     if not local_version:
         local_version = "0"
 
@@ -39,7 +47,8 @@ def bot():
     return render_template('bot_card.html',
                            bot_local_version=local_version,
                            bot_server_version=server_version,
-                           bot_status=launcher_instance.is_bot_alive(),
+                           bot_status=is_bot_alive,
+                           bot_url=bot_url,
                            is_up_to_date=is_up_to_date(local_version, server_version))
 
 
