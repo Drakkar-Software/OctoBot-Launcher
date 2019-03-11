@@ -129,7 +129,7 @@ def update_tentacles(binary_path, force_install=False):
             executor.execute_command_on_current_binary(binary_path, ["-p", "update", "all"])
             logging.info(f"Tentacles : all default tentacles have been updated.")
         else:
-            executor.execute_command_on_current_binary(binary_path, ["-p", "install", "all"])
+            executor.execute_command_on_current_binary(binary_path, ["-p", "install", "all", "force"])
             logging.info(f"Tentacles : all default tentacles have been installed.")
 
 
