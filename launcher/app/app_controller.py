@@ -33,7 +33,7 @@ def bot():
     bot_connector = OctoBotConnector()
     is_bot_alive = launcher_instance.is_bot_alive() or bot_connector.is_alive()
     if is_bot_alive:
-        local_version = bot_connector.get_current_version()
+        local_version = bot_connector.get_current_version(allow_retry=True)
         bot_url = bot_connector.get_web_interface_url()
     else:
         local_version = OctoBotVersion().get_current_version()
