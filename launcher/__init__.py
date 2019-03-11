@@ -70,6 +70,7 @@ DEFAULT_SERVER_IP = '0.0.0.0'
 DEFAULT_SERVER_PORT = 5010  # prevent conflicts with OctoBot web interface
 
 OCTOBOT_DEFAULT_SERVER_PORT = 5001
+OCTOBOT_API_MAX_RETRIES = 20
 
 server_instance = flask.Flask(__name__)
 launcher_instance = None

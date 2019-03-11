@@ -18,8 +18,9 @@ import os
 import json
 import socket
 import requests
+import time
 from launcher import OCTOBOT_DEFAULT_SERVER_PORT, CONFIG_CATEGORY_SERVICES, CONFIG_WEB, CONFIG_WEB_PORT, \
-    OCTOBOT_CONFIG_FILE
+    OCTOBOT_CONFIG_FILE, OCTOBOT_API_MAX_RETRIES
 
 
 class OctoBotConnector:
@@ -30,8 +31,16 @@ class OctoBotConnector:
         self.current_ip = socket.gethostbyname(socket.gethostname())
         self._get_current_octobot_address()
 
-    def get_current_version(self):
-        return json.loads(requests.get(f"{self.get_web_interface_url()}/api/version").text).split(" ")[1]
+    def get_current_version(self, allow_retry=False):
+        max_retries = OCTOBOT_API_MAX_RETRIES if allow_retry else 1
+        for i in range(max_retries):
+            try:
+                return json.loads(requests.get(f"{self.get_web_interface_url()}/api/version").text).split(" ")[1]
+            except Exception as e:
+                if i < max_retries-1:
+                    time.sleep(0.5)
+                else:
+                    raise e
 
     def get_web_interface_url(self):
         return f"http://{self.current_ip}:{self.port}"
