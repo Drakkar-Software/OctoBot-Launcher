@@ -75,7 +75,7 @@ def create_environment():
 def install_bot(force_package=False):
     create_environment()
 
-    binary_path = GithubOctoBot().update_binary(OctoBotVersion(), force_package=force_package)
+    binary_path = GithubOctoBot().update_binary(OctoBotVersion(), force_package=force_package, force_binary=True)
 
     # give binary execution rights if necessary
     if binary_path:

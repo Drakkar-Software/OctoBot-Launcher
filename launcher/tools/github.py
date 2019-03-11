@@ -99,7 +99,7 @@ class Github:
             logging.error("Release not found on server")
             return None
 
-    def update_binary(self, version_instance, force_package=False):
+    def update_binary(self, version_instance, force_package=False, force_binary=False):
         # parse latest release
         try:
             logging.info(f"{self.PROJECT} is checking for updates...")
@@ -108,7 +108,7 @@ class Github:
             # try to find binary / package
             binary_path = version_instance.get_local_binary()
 
-            if version_instance.is_package_installed() or force_package:
+            if (version_instance.is_package_installed() and not force_binary) or force_package:
                 version_instance.download_package()
                 return binary_path
             else:
