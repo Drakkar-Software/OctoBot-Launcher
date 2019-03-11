@@ -22,7 +22,7 @@ import requests
 from launcher import CONFIG_FILE, OCTOBOT_GITHUB_REPOSITORY, \
     GITHUB_RAW_CONTENT_URL, OCTOBOT_REFERENCE_BRANCH, DEFAULT_CONFIG_FILE, LOGGING_CONFIG_FILE, \
     CONFIG_DEFAULT_EVALUATOR_FILE, CONFIG_DEFAULT_TRADING_FILE, OCTOBOT_NAME, LINUX_OS_NAME, MAC_OS_NAME, \
-    TENTACLES_PATH, inc_progress
+    TENTACLES_PATH, inc_progress, FORCE_BINARY
 from launcher.tools import executor
 from launcher.tools.github import GithubOctoBot
 from launcher.tools.version import OctoBotVersion
@@ -75,7 +75,8 @@ def create_environment():
 def install_bot(force_package=False):
     create_environment()
 
-    binary_path = GithubOctoBot().update_binary(OctoBotVersion(), force_package=force_package, force_binary=True)
+    binary_path = GithubOctoBot().update_binary(OctoBotVersion(), force_package=force_package,
+                                                force_binary=FORCE_BINARY)
 
     # give binary execution rights if necessary
     if binary_path:

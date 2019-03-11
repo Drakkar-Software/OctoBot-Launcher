@@ -23,7 +23,7 @@ from subprocess import PIPE
 
 import pkg_resources
 
-from launcher import LINUX_OS_NAME, \
+from launcher import LINUX_OS_NAME, FORCE_BINARY, \
     WINDOWS_OS_NAME, MAC_OS_NAME, PROJECT_NAME, OCTOBOT_NAME, launcher_instance, inc_progress
 from launcher.tools import executor, BINARY_DOWNLOAD_PROGRESS_SIZE
 
@@ -48,10 +48,10 @@ class Version:
         except FileNotFoundError as e:
             logging.error(f"Can't find a valid python executable : {e}")
 
-    def get_local_binary(self):
+    def get_local_binary(self, force_binary=False):
         binary = None
 
-        if self.is_package_installed():
+        if not force_binary and self.is_package_installed():
             binary = self.PROJECT
         else:
             try:
@@ -75,16 +75,17 @@ class Version:
             return False
         return True
 
-    def get_current_version(self, binary_path=None):
+    def get_current_version(self, binary_path=None, force_binary=FORCE_BINARY):
         if not binary_path:
-            binary_path = self.get_local_binary()
+            binary_path = self.get_local_binary(force_binary=force_binary)
         if not self.is_binary_available(binary_path):
             return self.NOT_INSTALLED_VERSION
-        return executor.execute_command_on_current_binary(binary_path, ["--version"])
+        return executor.execute_command_on_current_binary(binary_path, ["--version"]).split("\r\n")[0]
 
-    def get_local_version_or_download(self, github_instance, binary_path, latest_release_data=None):
+    def get_local_version_or_download(self, github_instance, binary_path,
+                                      latest_release_data=None, force_binary=FORCE_BINARY):
         last_release_version = github_instance.get_current_server_version(latest_release_data=latest_release_data)
-        current_version = self.get_current_version(binary_path)
+        current_version = self.get_current_version(binary_path, force_binary=force_binary)
 
         try:
             if current_version == self.NOT_INSTALLED_VERSION:
