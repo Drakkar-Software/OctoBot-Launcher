@@ -1,5 +1,3 @@
-from distutils.version import LooseVersion
-
 from flask import jsonify, render_template
 
 import launcher as launcher_module
