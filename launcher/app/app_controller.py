@@ -2,7 +2,7 @@ from flask import jsonify, render_template
 
 import launcher as launcher_module
 from entrypoint import update_launcher
-from launcher import server_instance, VERSION, launcher_instance
+from launcher import server_instance, VERSION, launcher_instance, REDUCE_GITHUB_REQUESTS
 from launcher.tools.environment import update_tentacles
 from launcher.tools.github import GithubOctoBot, GithubLauncher
 from launcher.tools.version import OctoBotVersion
@@ -17,7 +17,7 @@ def home():
 
 @server_instance.route("/launcher")
 def launcher():
-    server_version = GithubLauncher().get_current_server_version()
+    server_version = None if REDUCE_GITHUB_REQUESTS else GithubLauncher().get_current_server_version()
     if not server_version:
         server_version = "0"
 
@@ -33,7 +33,7 @@ def bot():
     if not local_version:
         local_version = "0"
 
-    server_version = GithubOctoBot().get_current_server_version()
+    server_version = None if REDUCE_GITHUB_REQUESTS else GithubOctoBot().get_current_server_version()
     if not server_version:
         server_version = "0"
     return render_template('bot_card.html',
