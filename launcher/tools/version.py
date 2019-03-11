@@ -87,7 +87,10 @@ class Version:
         current_version = self.get_current_version(binary_path)
 
         try:
-            check_new_version = LooseVersion(current_version) < LooseVersion(last_release_version)
+            if current_version == self.NOT_INSTALLED_VERSION:
+                check_new_version = True
+            else:
+                check_new_version = LooseVersion(current_version) < LooseVersion(last_release_version)
         except AttributeError:
             check_new_version = False
 

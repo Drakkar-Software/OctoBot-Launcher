@@ -108,3 +108,6 @@ logs/
 config/
 .idea/
 config.json
+tentacles/
+OctoBot.exe
+vaderSentiment
