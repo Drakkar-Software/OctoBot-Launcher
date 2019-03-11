@@ -58,11 +58,18 @@ CONFIG_DEFAULT_TRADING_FILE = "config/default_trading_config.json"
 CONFIG_INTERFACES = "interfaces"
 CONFIG_INTERFACES_WEB = "web"
 
+OCTOBOT_CONFIG_FILE = "config.json"
+CONFIG_CATEGORY_SERVICES = "services"
+CONFIG_WEB = "web"
+CONFIG_WEB_PORT = "port"
+
 OCTOBOT_BACKGROUND_IMAGE = "static/img/octobot.png"
 OCTOBOT_ICON = "static/favicon.ico"
 
 DEFAULT_SERVER_IP = '0.0.0.0'
 DEFAULT_SERVER_PORT = 5010  # prevent conflicts with OctoBot web interface
+
+OCTOBOT_DEFAULT_SERVER_PORT = 5001
 
 server_instance = flask.Flask(__name__)
 launcher_instance = None
