@@ -84,7 +84,8 @@ def install_bot(force_package=False):
 
     # if update tentacles
     if binary_path:
-        update_tentacles(binary_path)
+        executable_path = OctoBotVersion().get_local_binary(force_binary=FORCE_BINARY)
+        update_tentacles(executable_path, force_install=True)
     else:
         logging.error(f"No {OCTOBOT_NAME} found to update tentacles.")
 
@@ -121,10 +122,10 @@ def ensure_file_environment(file_to_download):
                 new_file_from_dl.write(file_content.encode())
 
 
-def update_tentacles(binary_path):
+def update_tentacles(binary_path, force_install=False):
     if binary_path:
         # update tentacles if installed
-        if os.path.exists(TENTACLES_PATH):
+        if not force_install and os.path.exists(TENTACLES_PATH):
             executor.execute_command_on_current_binary(binary_path, ["-p", "update", "all"])
             logging.info(f"Tentacles : all default tentacles have been updated.")
         else:
