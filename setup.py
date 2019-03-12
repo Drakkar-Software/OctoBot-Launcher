@@ -34,7 +34,6 @@ setup(
     author_email='drakkar.software@protonmail.com',
     description='OctoBot project launcher',
     py_modules=['entrypoint'],
-    packages=['entrypoint'],
     long_description=DESCRIPTION,
     install_requires=REQUIRED,
     tests_require=['pytest'],

@@ -18,19 +18,19 @@ build_script:
   - "rd /s /q launcher\\app  launcher\\tools"
   - "del /q launcher\\*.py launcher\\static\\* launcher\\templates\\*"
   - "%PYTHON%\\Scripts\\pyinstaller.exe bin/launcher.spec"
-  - "echo f | xcopy /f /y dist\\launcher.exe dist\\launcher_windows.exe"
-  - "powershell get-filehash -algorithm sha1 dist\\launcher_windows.exe"
+  - "echo f | xcopy /f /y dist\\launcher_app.exe dist\\launcher_app_windows.exe"
+  - "powershell get-filehash -algorithm sha1 dist\\launcher_app_windows.exe"
 
 artifacts:
-  - path: dist/launcher_windows.exe
-    name: launcher_windows.exe
+  - path: dist/launcher_app_windows.exe
+    name: launcher_app_windows.exe
 
 deploy:
   - provider: Environment
     name: GITHUB_RELEASE_OCTOBOT_LAUNCHER
     draft: false
     prerelease: false
-    artifact: launcher_windows.exe
+    artifact: launcher_app_windows.exe
     on:
       branch: master
       APPVEYOR_REPO_TAG: true
