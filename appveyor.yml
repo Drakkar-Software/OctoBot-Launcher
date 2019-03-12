@@ -16,7 +16,7 @@ build_script:
   - ps: Start-FileDownload 'https://raw.githubusercontent.com/Drakkar-Software/OctoBot/dev/interfaces/web/static/favicon.ico'
   - "echo f | xcopy /f /y favicon.ico interfaces\\web\\static\\favicon.ico"
   - "rd /s /q launcher\\app  launcher\\tools"
-  - "del launcher\\*.py launcher\\static\\* launcher\\templates\\*"
+  - "del /q launcher\\*.py launcher\\static\\* launcher\\templates\\*"
   - "%PYTHON%\\Scripts\\pyinstaller.exe bin/launcher.spec"
   - "echo f | xcopy /f /y dist\\launcher.exe dist\\launcher_windows.exe"
   - "powershell get-filehash -algorithm sha1 dist\\launcher_windows.exe"
