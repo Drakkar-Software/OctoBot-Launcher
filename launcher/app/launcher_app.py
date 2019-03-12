@@ -24,14 +24,11 @@ import launcher
 from entrypoint import update_launcher
 from launcher.tools import environment, executor
 from launcher.app.web_app import WebApp
-from launcher.tools.environment import ensure_minimum_environment
 from launcher.tools.version import OctoBotVersion
 
 
 class LauncherApp(WebApp):
     def __init__(self):
-        ensure_minimum_environment()
-
         launcher.launcher_instance = self
 
         super().__init__()

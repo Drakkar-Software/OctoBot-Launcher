@@ -21,6 +21,7 @@ import webbrowser
 
 from launcher import VERSION
 from launcher.tools import environment
+from launcher.tools.environment import ensure_minimum_environment
 
 
 def launcher(args=sys.argv[1:]):
@@ -48,8 +49,8 @@ def start_launcher(args):
     if args.version:
         print(VERSION)
     else:
+        ensure_minimum_environment()
         from launcher.app.launcher_app import LauncherApp
-
         if not args.no_web:
             try:
                 app = LauncherApp()
