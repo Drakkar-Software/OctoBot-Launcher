@@ -82,7 +82,6 @@ def update_launcher():
 
 def main():
     logging.getLogger().setLevel(logging.INFO)
-    update_launcher()
 
     if not os.path.exists(LAUNCHER_PATH):
         update_launcher()
