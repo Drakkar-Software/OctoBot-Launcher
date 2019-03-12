@@ -24,6 +24,7 @@ from urllib.request import urlretrieve
 from past.translation import splitall
 
 LAUNCHER_PATH = "launcher"
+LAUNCHER_ENTRY_POINT = "entrypoint.py"
 RELEASE_PATH = "updates"
 LAUNCHER_SOURCE_EXT = "zip"
 sys.path.append(os.path.dirname(sys.executable))
@@ -67,6 +68,7 @@ def move_sources():
 
     try:
         shutil.move(os.path.join(RELEASE_PATH, get_extraction_location(), LAUNCHER_PATH), os.getcwd())
+        shutil.move(os.path.join(RELEASE_PATH, get_extraction_location(), LAUNCHER_ENTRY_POINT), os.getcwd())
     except FileNotFoundError:
         logging.warning("Can't move updated sources.")
 
