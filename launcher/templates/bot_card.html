@@ -37,7 +37,7 @@
             <button route="{{ url_for('start') }}" type="button" class="btn btn-success waves-effect {% if bot_status or bot_local_version == 'not installed' %}disabled{% endif %}">Start Octobot</button>
         </div>
         <div class="col-4">
-            <a href="{{ bot_url }}" target="_blank" rel="noopener noreferrer"><button type="button" class="btn btn-primary waves-effect {% if not bot_status %}disabled{% endif %}">Open OctoBot</button></a>
+            <a href="{{ bot_url }}" target="_blank" rel="noopener noreferrer" role="button" class="btn btn-primary waves-effect {% if not bot_status %}disabled{% endif %}">Open OctoBot</a>
         </div>
     </div>
     <div class="mt-4">
