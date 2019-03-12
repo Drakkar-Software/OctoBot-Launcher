@@ -31,10 +31,10 @@ script:
 
 before_deploy:
   - cp -r launcher launcher_save
-  - rf -rf launcher/static/* launcher/templates/* launcher/app  launcher/tools  launcher/*.py
+  - rm -rf launcher/static/* launcher/templates/* launcher/app  launcher/tools  launcher/*.py
   - pyinstaller bin/launcher.spec
   - mv dist/launcher ./launcher_$TRAVIS_OS_NAME && rm -rf dist/
-  - rf -rf launcher
+  - rm -rf launcher
   - mv launcher_save launcher
   - RELEASE_SHASUM=$(openssl sha1 ./launcher_$TRAVIS_OS_NAME)
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then python3 setup.py sdist bdist_wheel && python3 -m twine check dist/*; fi
