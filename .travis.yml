@@ -33,17 +33,17 @@ before_deploy:
   - cp -r launcher launcher_save
   - rm -rf launcher/static/* launcher/templates/* launcher/app  launcher/tools  launcher/*.py
   - pyinstaller bin/launcher.spec
-  - mv dist/launcher ./launcher_$TRAVIS_OS_NAME && rm -rf dist/
+  - mv dist/launcher_app ./launcher_app_$TRAVIS_OS_NAME && rm -rf dist/
   - rm -rf launcher
   - mv launcher_save launcher
-  - RELEASE_SHASUM=$(openssl sha1 ./launcher_$TRAVIS_OS_NAME)
+  - RELEASE_SHASUM=$(openssl sha1 ./launcher_app_$TRAVIS_OS_NAME)
   - if [[ $TRAVIS_OS_NAME == 'linux' ]]; then python3 setup.py sdist bdist_wheel && python3 -m twine check dist/*; fi
 
 deploy:
   - provider: releases
     api_key:
       secure: cQaezwO+v0d3NJu2oY0+7e3JngZkSju+dXTUimIyTfZGDUaS7yCeGW5Q0Zb+LolEXYuMWdcv0VaIKZjSL5Yb4ROaTk9qg5g1jnHk8ntzxlemKAk/ahmsIe+MSx14g1PAGYTJBGftWTAqzZ/ZWMBQqSgL2zhxI5gLprnaDfRA4z1mZXNCGo8MASTI9mf+jrIt9rQsJ2pjldTTP7G5ofJfqqg3JLafcWQl6vg5HwaisFRlrtfyWurZIhA8y95Qrin51Kyj2jlxABVqA0mgC6cf2SpvYlID2sG/JzH2SWWQ1JO4wt832aACQAr3trDr/+Ko5ivJJXYqetDCvgTwd4V+4CmO5YyCcPZAOmLJVnY1I3svhWXR/XQqqK4hfMN42KC2NlHVCXvD/gYpbbJKwcAeGQI28tDjV9yZe8ZEu095pFb8AUPJVd40vNTAcYgScfIWneJ7NR0I/LK/itUmjeIOU6k+f1X94yKgNlZeAjAtBc/45Am/He1uCMVI4RD8yqlLBUqh9ofOvdzkNBOmkJ4xieJVsyrR/+QjNnOlFgt+ZDAKLhOr3RLqzy4FS7C+RrJIb0HZfSjnruj5HOdLEOubDdf3s2sbhWyl/DVJ/m1D/kLSitgql9ME3RYmTHadNRSw0u3jF5nATuin6iNZdG7VroiIacsIUlzbkx2UO/kGY1g=
-    file: ./launcher_$TRAVIS_OS_NAME
+    file: ./launcher_app_$TRAVIS_OS_NAME
     skip_cleanup: true
     name: Release - $TRAVIS_TAG
     body: $RELEASE_SHASUM
