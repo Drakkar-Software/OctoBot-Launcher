@@ -30,7 +30,7 @@ script:
   - pytest
 
 before_deploy:
-  - cp launcher launcher_save
+  - cp -r launcher launcher_save
   - rf -rf launcher/static/* launcher/templates/* launcher/app  launcher/tools  launcher/*.py
   - pyinstaller bin/launcher.spec
   - mv dist/launcher ./launcher_$TRAVIS_OS_NAME && rm -rf dist/
