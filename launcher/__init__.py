@@ -48,10 +48,12 @@ GITHUB_URL = f"{GITHUB_BASE_URL}/{OCTOBOT_GITHUB_REPOSITORY}"
 LAUNCHER_PATH = "launcher"
 
 CONFIG_FILE = "config.json"
+CONFIG_FILE_SCHEMA_NAME = "config_schema.json"
 
 REPOSITORY_BRANCH = "master"
 
 TENTACLES_PATH = "tentacles"
+CONFIG_FILE_SCHEMA_WITH_PATH = f"config/{CONFIG_FILE_SCHEMA_NAME}"
 CONFIG_DEFAULT_EVALUATOR_FILE = "config/default_evaluator_config.json"
 CONFIG_DEFAULT_TRADING_FILE = "config/default_trading_config.json"
 
