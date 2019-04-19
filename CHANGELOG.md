@@ -1,5 +1,11 @@
 *It is strongly advised to perform an update of your tentacles after updating OctoBot.*
 
+Changelog for 2.0.2
+====================
+*Released date : April 19 2019*
+
+- Fixed url typo
+
 Changelog for 2.0.1
 ====================
 *Released date : April 19 2019*
