@@ -20,7 +20,7 @@ import flask
 PROJECT_NAME = "OctoBot-Launcher"
 OCTOBOT_BINARY = "OctoBot-Binary"
 OCTOBOT_NAME = "OctoBot"
-SHORT_VERSION = "2.0.0"
+SHORT_VERSION = "2.0.1"
 PATCH_VERSION = ""  # patch : pX
 VERSION_DEV_PHASE = ""  # alpha : a / beta : b / release candidate : rc
 VERSION_PHASE = ""  # XX
