@@ -1,5 +1,11 @@
 *It is strongly advised to perform an update of your tentacles after updating OctoBot.*
 
+Changelog for 2.0.1
+====================
+*Released date : April 19 2019*
+
+- Added config schema in environment build
+
 Changelog for 2.0.0
 ====================
 *Released date : March 12 2019*
