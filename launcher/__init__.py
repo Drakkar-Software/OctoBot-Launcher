@@ -32,6 +32,7 @@ REDUCE_GITHUB_REQUESTS = False
 
 OCTOBOT_REFERENCE_BRANCH = "master"
 OCTOBOT_LAUNCHER_VERSION_BRANCH = "master"
+OCTOBOT_DEV_PHASE = "beta"
 
 DEFAULT_CONFIG_FILE = "config/default_config.json"
 LOGGING_CONFIG_FILE = "config/logging_config.ini"

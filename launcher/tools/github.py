@@ -21,7 +21,7 @@ import requests
 
 from launcher import GITHUB_API_CONTENT_URL, LAUNCHER_GITHUB_REPOSITORY, \
     OCTOBOT_BINARY_GITHUB_REPOSITORY, WINDOWS_OS_NAME, DeliveryPlatformsName, LINUX_OS_NAME, OCTOBOT_NAME, PROJECT_NAME, \
-    inc_progress
+    inc_progress, OCTOBOT_DEV_PHASE
 from launcher.tools import BINARY_DOWNLOAD_PROGRESS_SIZE
 
 
@@ -65,7 +65,12 @@ class Github:
         if not latest_release_data:
             latest_release_data = self.get_latest_release_data()
         try:
-            return latest_release_data["tag_name"]
+            tag_name = latest_release_data["tag_name"]
+            dev_phase_tag = f"-{OCTOBOT_DEV_PHASE}"
+            if dev_phase_tag in tag_name:
+                return tag_name.split(dev_phase_tag)[0]
+            else:
+                return tag_name
         except KeyError:
             return None
 
