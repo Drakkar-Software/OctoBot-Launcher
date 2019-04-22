@@ -26,7 +26,7 @@
         </div>
         <div class="col-6">
             <button route="{{ url_for('install') }}" type="button" class="btn btn-primary waves-effect {% if bot_server_version != '0' and is_up_to_date %}disabled{% endif %}">{{ 'Update Octobot' if bot_local_version != 'not installed' else 'Install OctoBot'}}</button>
-            <button route="{{ url_for('tentacles') }}" type="button" class="btn btn-outline-info waves-effect {% if is_up_to_date or bot_local_version == 'not installed' %}disabled{% endif %}">Update tentacles</button>
+            <button route="{{ url_for('tentacles') }}" type="button" class="btn btn-outline-info waves-effect {% if bot_local_version == 'not installed' %}disabled{% endif %}">Update tentacles</button>
         </div>
     </div>
     <div class="row col-12">
