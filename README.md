@@ -21,11 +21,12 @@ A launcher for your [OctoBot](https://github.com/Drakkar-Software/OctoBot) !
 **For 64 bits systems only**
 - Download [latest release](https://github.com/Drakkar-Software/OctoBot-Launcher/releases)
 - On Windows : double click on launcher_windows.exe
-- On Linux : 
+- On Linux : type in a command line : 
 ``` {.sourceCode .bash}
 $ chmox +x launcher_linux
 $ ./launcher_linux
 ```
+- OSX version is released but not tested yet. It might work but we advise to use the python (Without binary) version for this OS.
 
 ### Without binary
 Install [Python 3.7](https://www.python.org/downloads/) and then type in a command line : 
