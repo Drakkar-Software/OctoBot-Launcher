@@ -31,7 +31,7 @@ setup(
     url='https://github.com/Drakkar-Software/OctoBot-Launcher',
     license='LGPL-3.0',
     author='Drakkar-Software',
-    author_email='drakkar.software@protonmail.com',
+    author_email='drakkar-software@protonmail.com',
     description='OctoBot project launcher',
     py_modules=['entrypoint'],
     long_description=DESCRIPTION,
