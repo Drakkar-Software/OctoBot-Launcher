@@ -14,9 +14,11 @@
 #  You should have received a copy of the GNU Lesser General Public
 #  License along with this library.
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 from launcher import PROJECT_NAME, VERSION
+
+PACKAGES = find_packages(exclude=["tests"])
 
 # long description from README file
 with open('README.md', encoding='utf-8') as f:
@@ -37,6 +39,8 @@ setup(
     long_description=DESCRIPTION,
     install_requires=REQUIRED,
     tests_require=['pytest'],
+    packages=PACKAGES,
+    include_package_data=True,
     test_suite="tests",
     zip_safe=False,
     python_requires=REQUIRES_PYTHON,

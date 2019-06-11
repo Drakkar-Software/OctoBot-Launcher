@@ -1,0 +1,11 @@
+recursive-include launcher *.html
+recursive-include launcher *.css
+recursive-include launcher *.js
+recursive-include launcher *.png
+recursive-include launcher *.svg
+recursive-include launcher *.ico
+
+include README.md
+include LICENSE
+include CHANGELOG.md
+include requirements.txt
