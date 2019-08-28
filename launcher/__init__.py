@@ -36,6 +36,7 @@ OCTOBOT_DEV_PHASE = "beta"
 
 DEFAULT_CONFIG_FILE = "config/default_config.json"
 LOGGING_CONFIG_FILE = "config/logging_config.ini"
+STRATEGY_OPTIMIZER_DATA_FOLDER = "tests/static"
 
 GITHUB_RAW_CONTENT_URL = "https://raw.githubusercontent.com"
 GITHUB_API_CONTENT_URL = "https://api.github.com"
