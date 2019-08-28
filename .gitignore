@@ -111,3 +111,4 @@ config.json
 tentacles/
 OctoBot.exe
 vaderSentiment
+tests/static/*.data
