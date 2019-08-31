@@ -1,5 +1,11 @@
 *It is strongly advised to perform an update of your tentacles after updating OctoBot.*
 
+Changelog for 2.0.4
+====================
+*Released date : August 31 2019*
+### Fixed
+- Now downloads strategy optimizer data
+
 Changelog for 2.0.3
 ====================
 *Released date : June 12 2019*
