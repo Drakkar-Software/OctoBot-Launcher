@@ -39,6 +39,7 @@ STRATEGY_OPTIMIZER_DATA = [
     "binance_VEN_BTC_20180716_131148.data",
     "binance_XLM_BTC_20180722_234305.data",
     "binance_XRB_BTC_20180716_131148.data",
+    "bittrex_ADA_BTC_20180722_223357.data",
     "bittrex_ETC_BTC_20180726_210341.data",
     "bittrex_NEO_BTC_20180722_195942.data",
     "bittrex_WAX_BTC_20180726_205032.data",
