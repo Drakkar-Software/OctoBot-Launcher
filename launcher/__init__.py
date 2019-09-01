@@ -49,7 +49,7 @@ GITHUB_URL = f"{GITHUB_BASE_URL}/{OCTOBOT_GITHUB_REPOSITORY}"
 
 LAUNCHER_PATH = "launcher"
 
-CONFIG_FILE = "config.json"
+CONFIG_FILE = "user/config.json"
 CONFIG_FILE_SCHEMA_NAME = "config_schema.json"
 
 REPOSITORY_BRANCH = "master"
