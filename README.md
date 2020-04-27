@@ -1,4 +1,5 @@
 # OctoBot-Launcher [2.0.4](https://github.com/Drakkar-Software/OctoBot-Launcher/tree/master/CHANGELOG.md)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b1b91943d078491d8c3c4ae39eb6d50f)](https://app.codacy.com/gh/Drakkar-Software/OctoBot-Launcher?utm_source=github.com&utm_medium=referral&utm_content=Drakkar-Software/OctoBot-Launcher&utm_campaign=Badge_Grade_Dashboard)
 [![PyPI](https://img.shields.io/pypi/v/OctoBot-Launcher.svg)](https://pypi.python.org/pypi/OctoBot-Launcher/)
 [![Downloads](https://pepy.tech/badge/octobot-launcher/month)](https://pepy.tech/project/octobot-launcher)
 [![Release](https://img.shields.io/github/downloads/Drakkar-Software/OctoBot-Launcher/total.svg)](https://github.com/Drakkar-Software/OctoBot-Launcher/releases)
