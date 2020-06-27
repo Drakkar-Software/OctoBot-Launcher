@@ -56,14 +56,16 @@ class Version:
         else:
             try:
                 # try to found in current folder binary
-                if os.name == LINUX_OS_NAME:
+                if (
+                    os.name == LINUX_OS_NAME
+                    or os.name != WINDOWS_OS_NAME
+                    and os.name == MAC_OS_NAME
+                ):
                     binary = f"./{next(iter(glob.glob(f'{self.PROJECT}*')))}"
 
                 elif os.name == WINDOWS_OS_NAME:
                     binary = next(iter(glob.glob(f'{self.PROJECT}*.exe')))
 
-                elif os.name == MAC_OS_NAME:
-                    binary = f"./{next(iter(glob.glob(f'{self.PROJECT}*')))}"
             except StopIteration:
                 binary = None
 
@@ -71,9 +73,7 @@ class Version:
 
     @staticmethod
     def is_binary_available(binary_path):
-        if binary_path is None or not os.path.isfile(binary_path):
-            return False
-        return True
+        return bool(binary_path is not None and os.path.isfile(binary_path))
 
     def get_current_version(self, binary_path=None, force_binary=FORCE_BINARY):
         if not binary_path:

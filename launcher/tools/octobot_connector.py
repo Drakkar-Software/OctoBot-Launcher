@@ -57,8 +57,13 @@ class OctoBotConnector:
             try:
                 with open(OCTOBOT_CONFIG_FILE) as json_data_file:
                     self.octobot_config = json.load(json_data_file)
-                if CONFIG_WEB in self.octobot_config[CONFIG_CATEGORY_SERVICES]:
-                    if CONFIG_WEB_PORT in self.octobot_config[CONFIG_CATEGORY_SERVICES][CONFIG_WEB_PORT]:
-                        self.port = self.octobot_config[CONFIG_CATEGORY_SERVICES][CONFIG_WEB_PORT]
+                if (
+                    CONFIG_WEB in self.octobot_config[CONFIG_CATEGORY_SERVICES]
+                    and CONFIG_WEB_PORT
+                    in self.octobot_config[CONFIG_CATEGORY_SERVICES][
+                        CONFIG_WEB_PORT
+                    ]
+                ):
+                    self.port = self.octobot_config[CONFIG_CATEGORY_SERVICES][CONFIG_WEB_PORT]
             except Exception as e:
                 print(f"Error when reading {OCTOBOT_CONFIG_FILE}: {e}")

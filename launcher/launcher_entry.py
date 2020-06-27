@@ -62,7 +62,3 @@ def start_launcher(args):
             environment.install_bot(force_package=False)
         elif args.start:
             LauncherApp().start_bot_handler([f"-{arg}" for arg in args.start] if args.start else None)
-        elif args.export_logs:
-            pass
-        else:
-            pass
